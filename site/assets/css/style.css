@@ -761,3 +761,8 @@ html:has(.subnav) { scroll-padding-top: calc(var(--header-h) + 72px); }
 .to-top { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); right: 25px; }
 /* Метка вместо цены в калькуляторе переносится и не сжимает название услуги */
 .option__price:has(.tk) { white-space: normal; max-width: 42%; text-align: right; }
+/* Страница обработки данных */
+.privacy-principles { margin-top: 28px; }
+.privacy-list { grid-template-columns: minmax(0, 1fr); }
+.steps--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1024px) { .steps--3 { grid-template-columns: minmax(0, 1fr); } }
