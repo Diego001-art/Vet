@@ -93,7 +93,7 @@ SPRITE = '<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidd
 
 def emblem(uid, size=46, cls="brand__mark"):
     """Эмблема: арка окна, лапа и тёплый огонёк."""
-    return f'''<svg class="{cls}" width="{size}" height="{size}" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g-{uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b8b80"/><stop offset="1" stop-color="#17544d"/></linearGradient></defs><path d="M8 30a24 24 0 0 1 48 0v24a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6z" fill="url(#g-{uid})"/><circle cx="32" cy="17.5" r="8.5" fill="#f2b56b" opacity=".25"/><circle cx="32" cy="17.5" r="4.6" fill="#f2b56b"/><g fill="#fff"><ellipse cx="21.6" cy="34.4" rx="3.3" ry="4.1" transform="rotate(-24 21.6 34.4)"/><ellipse cx="27.6" cy="29" rx="3.4" ry="4.4" transform="rotate(-8 27.6 29)"/><ellipse cx="36.4" cy="29" rx="3.4" ry="4.4" transform="rotate(8 36.4 29)"/><ellipse cx="42.4" cy="34.4" rx="3.3" ry="4.1" transform="rotate(24 42.4 34.4)"/><path d="M32 37c-4.6 0-9.5 5.6-9.5 9.6 0 2.6 2 4 4.6 4 2 0 3.2-1 4.9-1s2.9 1 4.9 1c2.6 0 4.6-1.4 4.6-4 0-4-4.9-9.6-9.5-9.6z"/></g></svg>'''
+    return f'''<svg class="{cls}" width="{size}" height="{size}" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g-{uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2d9ad0"/><stop offset="1" stop-color="#22598c"/></linearGradient></defs><path d="M8 30a24 24 0 0 1 48 0v24a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6z" fill="url(#g-{uid})"/><circle cx="32" cy="17.5" r="8.5" fill="#f2b56b" opacity=".25"/><circle cx="32" cy="17.5" r="4.6" fill="#f2b56b"/><g fill="#fff"><ellipse cx="21.6" cy="34.4" rx="3.3" ry="4.1" transform="rotate(-24 21.6 34.4)"/><ellipse cx="27.6" cy="29" rx="3.4" ry="4.4" transform="rotate(-8 27.6 29)"/><ellipse cx="36.4" cy="29" rx="3.4" ry="4.4" transform="rotate(8 36.4 29)"/><ellipse cx="42.4" cy="34.4" rx="3.3" ry="4.1" transform="rotate(24 42.4 34.4)"/><path d="M32 37c-4.6 0-9.5 5.6-9.5 9.6 0 2.6 2 4 4.6 4 2 0 3.2-1 4.9-1s2.9 1 4.9 1c2.6 0 4.6-1.4 4.6-4 0-4-4.9-9.6-9.5-9.6z"/></g></svg>'''
 
 
 def brand(uid, href="index.html"):
@@ -512,7 +512,7 @@ def page(meta, body):
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:image" content="{SITE_URL}assets/img/og-image.png">
-<meta name="theme-color" content="#1e6a62">
+<meta name="theme-color" content="#2866a0">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
