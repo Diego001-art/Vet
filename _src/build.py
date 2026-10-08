@@ -361,7 +361,7 @@ def modals():
   </div>
 </dialog>
 <div class="cookie" id="cookie" hidden>
-  <p>Сайт использует cookie и системы веб-аналитики, чтобы понимать, какие страницы полезны. Подробнее — в <a href="privacy.html">политике конфиденциальности</a>.</p>
+  <p>Сайт запоминает ваш выбор в браузере и подключает аналитические cookie (Яндекс Метрика и другие) только после вашего согласия. Подробнее — в <a href="privacy.html">политике обработки данных</a>.</p>
   <div class="btn-row"><button class="btn btn--primary btn--sm" type="button" data-consent="yes">Принять</button><button class="btn btn--sm" type="button" data-consent="no">Отказаться</button></div>
 </div>'''
 
