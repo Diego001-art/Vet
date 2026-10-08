@@ -1,7 +1,7 @@
-{"title": "Зона выезда — Мягкий Свет", "description": "Куда выезжает ветеринарный врач службы «Мягкий Свет»: город и пригороды, доплаты по зонам, как согласовать время визита.", "nav": "zona"}
+{"title": "Зона выезда ветеринара{cityIn} — Мягкий Свет", "description": "Куда выезжает ветеринарный врач службы «Мягкий Свет»{cityIn}: районы города и пригороды, доплаты по зонам, как согласовать время визита.", "nav": "zona", "crumbs": [["Зона выезда", ""]]}
 <section class="page-hero">
   <div class="container">
-    <ol class="crumbs"><li><a href="index.html">Главная</a></li><li>Зона выезда</li></ol>
+    {{crumbs}}
     {{part:zone-h1}}
   </div>
 </section>
@@ -12,25 +12,22 @@
     <div class="grid grid-3">
       <div class="card"><span class="card__ico">{{i:phone}}</span><h3>Позвоните или оставьте заявку</h3><p>Назовите адрес, вид и примерный вес питомца.</p></div>
       <div class="card"><span class="card__ico">{{i:clock}}</span><h3>Узнайте время приезда</h3><p>Оператор скажет, когда врач сможет быть у вас, и назовёт доплату за выезд, если она нужна.</p></div>
-      <div class="card"><span class="card__ico">{{i:home}}</span><h3>Встретьте врача</h3><p>Предупредите о домофоне, парковке или особенностях подъезда — так врач приедет быстрее.</p></div>
+      <div class="card"><span class="card__ico">{{i:home}}</span><h3>Встретьте врача</h3><p>Предупредите о домофоне, парковке или особенностях подъезда.</p></div>
     </div>
   </div>
 </section>
 
 <section class="section section--tint" id="rayony">
   <div class="container">
-    <div class="section-head"><div class="section-head__text"><span class="eyebrow">Районы и населённые пункты</span><h2>Где мы работаем</h2><p class="lead">Добавьте сюда список районов и пригородов, куда выезжают врачи. Пока здесь нейтральные заглушки.</p></div></div>
-    <div class="grid grid-2">
-      <div class="panel"><h3>Город</h3><div class="chip-row"><span class="chip">{{i:pin}}Район 1</span><span class="chip">{{i:pin}}Район 2</span><span class="chip">{{i:pin}}Район 3</span><span class="chip">{{i:pin}}Район 4</span><span class="chip">{{i:pin}}Район 5</span><span class="chip">{{i:pin}}Район 6</span></div></div>
-      <div class="panel"><h3>Пригороды</h3><div class="chip-row"><span class="chip">{{i:pin}}Населённый пункт 1</span><span class="chip">{{i:pin}}Населённый пункт 2</span><span class="chip">{{i:pin}}Населённый пункт 3</span><span class="chip">{{i:pin}}Населённый пункт 4</span></div></div>
-    </div>
+    <div class="section-head"><div class="section-head__text"><span class="eyebrow">Районы и населённые пункты</span><h2>Где мы работаем</h2><p class="lead">Если вашего района нет в списке, позвоните — уточним возможность выезда.</p></div></div>
+    {{part:districts}}
   </div>
 </section>
 
 <section class="section" id="voprosy">
   <div class="container">
     <div class="section-head"><div class="section-head__text"><h2>Вопросы о выезде</h2></div></div>
-    {{part:faq-zona}}
+    {{faq:rayon,noch,kvartira,cena}}
   </div>
 </section>
 

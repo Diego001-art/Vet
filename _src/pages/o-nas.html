@@ -1,7 +1,7 @@
-{"title": "О службе «Мягкий Свет» — принципы и врачи", "description": "Выездная ветеринарная служба «Мягкий Свет»: как мы работаем, наши принципы и врачи. Уважение к питомцу и к решению владельца.", "nav": "o-nas"}
+{"title": "О службе «Мягкий Свет»: врачи, опыт, порядок работы", "description": "Выездная ветеринарная служба «Мягкий Свет»: кто мы, где работаем, врачи и их опыт, порядок работы и сведения о компании.", "nav": "o-nas", "crumbs": [["О службе", ""]], "type": "AboutPage"}
 <section class="page-hero">
   <div class="container">
-    <ol class="crumbs"><li><a href="index.html">Главная</a></li><li>О службе</li></ol>
+    {{crumbs}}
     <div class="page-hero__grid">
       <div class="page-hero__text">
         <span class="eyebrow">О нас</span>
@@ -23,13 +23,21 @@
 
 <nav class="subnav" aria-label="Разделы страницы">
   <div class="container subnav__inner">
+    <a href="#fakty">Коротко</a>
     <a href="#principy">Принципы</a>
     <a href="#vrachi">Врачи</a>
+    <a href="#opyt">Опыт</a>
     <a href="#rabota">Как мы работаем</a>
     <a href="#rekvizity">Сведения о компании</a>
     <a class="subnav__cta" href="#svyaz">Связаться</a>
   </div>
 </nav>
+
+<section class="section section--tight" id="fakty">
+  <div class="container">
+    {{part:facts}}
+  </div>
+</section>
 
 <section class="section" id="principy">
   <div class="container">
@@ -50,6 +58,16 @@
   </div>
 </section>
 
+<section class="section section--tight" id="opyt">
+  <div class="container">
+    <div class="panel">
+      <h2 class="h-card">Опыт и квалификация</h2>
+      <p>Опыт службы: {{d:experience}}</p>
+      <p class="muted">Образование и стаж каждого врача — в карточках выше.</p>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="rabota">
   <div class="container split">
     <div class="split__text">
@@ -57,23 +75,27 @@
       <h2>Как мы работаем</h2>
       <p class="muted">Мы хотим, чтобы вы понимали каждый шаг: что произойдёт, сколько это стоит и что вы получите в итоге.</p>
       <ul class="check-list">
-        <li>Оператор подробно расспросит о ситуации и назовёт ориентировочную стоимость</li>
+        <li>Оператор расспросит о ситуации и назовёт ориентировочную стоимость</li>
         <li>Врач приезжает в согласованное время и сначала осматривает питомца</li>
         <li>Стоимость подтверждается до начала работы</li>
-        <li>Кремацию, урну и доставку организуем сами — вам не нужно никуда ехать</li>
+        <li>Кремацию, урну и доставку организуем по вашему выбору</li>
       </ul>
     </div>
-    <div class="ph ph--arch">{{i:photo}}<span>Место для фото команды<br>или рабочего процесса</span></div>
+    <div class="ph ph--arch">{{i:photo}}<span>[ADD REAL PHOTO]<br>команда или рабочий процесс</span></div>
   </div>
 </section>
 
 <section class="section section--tint section--tight" id="rekvizity">
   <div class="container">
     <div class="panel">
-      <h2 style="font-size:1.4rem">Сведения о компании</h2>
-      <p class="muted" data-site-block="legal" hidden><span data-site="legal"></span></p>
-      <p class="muted">Полное наименование, ИНН, ОГРН и сведения о лицензиях появятся здесь после заполнения файла настроек. До этого блок намеренно оставлен без данных.</p>
-      <p class="small muted" data-site-block="address" hidden>{{i:pin}} Адрес: <span data-site="address"></span></p>
+      <h2 class="h-card">Сведения о компании</h2>
+      <dl class="facts__list">
+        <div><dt>Организация</dt><dd>{{d:legal}}</dd></div>
+        <div><dt>Адрес</dt><dd>{{d:address}}</dd></div>
+        <div><dt>Телефон</dt><dd>{{d:phone}}</dd></div>
+        <div><dt>E-mail</dt><dd>{{d:email}}</dd></div>
+        <div><dt>Часы работы</dt><dd>{{d:hours}}</dd></div>
+      </dl>
     </div>
   </div>
 </section>

@@ -1,0 +1,33 @@
+# Мягкий Свет
+
+> Ветеринарная служба деликатной помощи. Выездная ветеринарная служба: гуманное усыпление животных на дому по медицинским показаниям, общая и индивидуальная кремация, вывоз тела, урны и доставка праха.
+
+## Факты
+- Где работаем: [ADD REAL SERVICE AREA]
+- Город: [ADD REAL CITY]
+- Часы работы: [ADD REAL HOURS]
+- Телефон: [ADD REAL PHONE]
+- E-mail: [ADD REAL EMAIL]
+- WhatsApp: [ADD REAL WHATSAPP]
+- Telegram: [ADD REAL TELEGRAM]
+- Цены: усыпление на дому — [ADD REAL PRICE]; общая кремация — [ADD REAL PRICE]; индивидуальная кремация — [ADD REAL PRICE]
+- Животные: кошки, собаки, грызуны, кролики, хорьки, птицы, рептилии
+- Язык: русский
+
+## Основные страницы
+- [Усыпление животных на дому](https://diego001-art.github.io/Vet/usyplenie.html): показания, порядок визита, подготовка, цены
+- [Усыпление кошки на дому](https://diego001-art.github.io/Vet/usyplenie-koshek.html)
+- [Усыпление собаки на дому](https://diego001-art.github.io/Vet/usyplenie-sobak.html)
+- [Кремация животных](https://diego001-art.github.io/Vet/kremaciya.html): общая и индивидуальная, урны, фото- и видеоотчёт
+- [Вывоз тела животного](https://diego001-art.github.io/Vet/vyvoz.html)
+- [Цены и калькулятор](https://diego001-art.github.io/Vet/ceny.html)
+- [Зона выезда](https://diego001-art.github.io/Vet/zona.html)
+- [О службе](https://diego001-art.github.io/Vet/o-nas.html)
+- [Вопросы и ответы](https://diego001-art.github.io/Vet/faq.html)
+- [Контакты](https://diego001-art.github.io/Vet/kontakty.html)
+
+## Памятки владельцам
+- [Как подготовиться к визиту ветеринара](https://diego001-art.github.io/Vet/stati-podgotovka.html)
+- [Общая или индивидуальная кремация: как выбрать](https://diego001-art.github.io/Vet/stati-kremaciya.html)
+- [Питомец умер дома: что делать в первые часы](https://diego001-art.github.io/Vet/stati-pitomec-umer.html)
+- [Как пережить уход питомца и поговорить с детьми](https://diego001-art.github.io/Vet/stati-poterya.html)

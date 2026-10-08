@@ -1,7 +1,7 @@
-{"title": "Вопросы и ответы — Мягкий Свет", "description": "Ответы на частые вопросы об усыплении животных на дому, кремации, стоимости и документах.", "nav": "stati"}
+{"title": "Вопросы и ответы — Мягкий Свет", "description": "Ответы на частые вопросы об усыплении животных на дому, кремации, стоимости и документах.", "nav": "stati", "crumbs": [["Полезное", "stati.html"], ["Вопросы и ответы", ""]]}
 <section class="page-hero">
   <div class="container">
-    <ol class="crumbs"><li><a href="index.html">Главная</a></li><li><a href="stati.html">Полезное</a></li><li>Вопросы и ответы</li></ol>
+    {{crumbs}}
     <div class="page-hero__grid">
       <div class="page-hero__text">
         <span class="eyebrow">Справка</span>
@@ -20,7 +20,7 @@
 
 <section class="section section--tight">
   <div class="container">
-    {{part:faq-all}}
+    {{faq:all}}
   </div>
 </section>
 

@@ -1,15 +1,16 @@
-{"title": "Мягкий Свет — усыпление на дому и кремация животных", "description": "Выездная ветеринарная служба: бережное усыпление питомца дома, общая и индивидуальная кремация, вывоз тела и доставка урны. Стоимость — до начала работы.", "nav": "home"}
+{"title": "Усыпление животных на дому и кремация{cityIn} — Мягкий Свет", "description": "Выездная ветеринарная служба: гуманное усыпление кошек и собак на дому, общая и индивидуальная кремация, вывоз тела. Врач сначала осматривает питомца, стоимость — до начала работы.", "nav": "home", "type": "WebPage"}
 <section class="hero">
   <div class="container hero__grid">
     <div class="hero__text">
-      <span class="eyebrow">Помощь на дому · {{part:city}} {{part:region}}</span>
-      <h1>Бережное усыпление дома и кремация животных</h1>
+      <span class="eyebrow">Выезд на дом · {{d:area}}</span>
+      <h1>Усыпление животных на дому и кремация{{cityIn}}</h1>
       <p class="lead">Ветеринарный врач приедет к вам, осмотрит питомца и спокойно ответит на вопросы. Если решение принято, поможем попрощаться без спешки и возьмём на себя кремацию.</p>
       <div class="btn-row">
-        <button class="btn btn--primary" type="button" data-open="callback" data-topic="Выезд ветеринара">{{i:chat}}Вызвать врача</button>
-        <a class="btn" href="#kalkulyator">{{i:calc}}Рассчитать стоимость</a>
+        <button class="btn btn--primary" type="button" data-open="callback" data-topic="Усыпление на дому">{{i:chat}}Вызвать врача</button>
+        <a class="btn" href="#kalkulyator">{{i:calc}}Узнать цену</a>
       </div>
-      <p class="hero__note">Время приезда зависит от адреса — оператор назовёт его при звонке.</p>
+      <p class="hero__contact">{{i:phone}} {{d:phone}} <span class="muted">· {{d:hours}}</span></p>
+      {{part:messengers}}
       <ul class="hero__facts">
         <li>{{i:steth}}<span><strong>Сначала осмотр</strong>и разговор с вами</span></li>
         <li>{{i:doc}}<span><strong>Цена заранее</strong>до начала работы</span></li>
@@ -62,8 +63,8 @@
       <div class="note-card">
         <span class="note-card__ico">{{i:heart}}</span>
         <div>
-          <h3>Сначала — глубокий сон</h3>
-          <p>Питомец засыпает после седации. Следующий этап врач начинает, только когда убедится, что животное ничего не чувствует.</p>
+          <p class="note-card__title">Сначала — глубокий сон</p>
+          <p>Питомец засыпает после седации. Следующий этап врач начинает, только когда убедится, что животное в глубоком сне.</p>
         </div>
       </div>
     </div>
@@ -78,19 +79,19 @@
         <span class="card__ico">{{i:chat}}</span>
         <h3>Хочу сначала посоветоваться</h3>
         <p>Расскажите о состоянии питомца. Объясним, какие есть варианты и как проходит визит врача.</p>
-        <div class="card__foot"><button class="link-arrow calc-inline-link" style="text-decoration:none" type="button" data-open="callback" data-topic="Консультация">Получить консультацию{{i:arrow-right}}</button></div>
+        <div class="card__foot"><button class="link-arrow calc-inline-link" type="button" data-open="callback" data-topic="Консультация">Получить консультацию{{i:arrow-right}}</button></div>
       </article>
       <article class="card scenario">
         <span class="card__ico">{{i:home}}</span>
         <h3>Нужен врач на дом</h3>
-        <p>Ветеринар приедет в удобное время, осмотрит питомца и обсудит с вами дальнейшие шаги.</p>
-        <div class="card__foot"><button class="link-arrow calc-inline-link" style="text-decoration:none" type="button" data-open="callback" data-topic="Выезд ветеринара">Вызвать врача{{i:arrow-right}}</button></div>
+        <p>Ветеринар приедет в согласованное время, осмотрит питомца и обсудит с вами дальнейшие шаги.</p>
+        <div class="card__foot"><button class="link-arrow calc-inline-link" type="button" data-open="callback" data-topic="Усыпление на дому">Вызвать врача{{i:arrow-right}}</button></div>
       </article>
       <article class="card scenario">
         <span class="card__ico">{{i:heart}}</span>
         <h3>Питомец уже умер</h3>
-        <p>Бережно заберём тело, организуем общую или индивидуальную кремацию и привезём урну.</p>
-        <div class="card__foot"><button class="link-arrow calc-inline-link" style="text-decoration:none" type="button" data-open="callback" data-topic="Вывоз тела">Организовать вывоз{{i:arrow-right}}</button></div>
+        <p>Заберём тело, организуем общую или индивидуальную кремацию и вернём прах, если вы выберете такой формат.</p>
+        <div class="card__foot"><a class="link-arrow" href="vyvoz.html">Как организовать вывоз{{i:arrow-right}}</a></div>
       </article>
     </div>
   </div>
@@ -103,39 +104,39 @@
       <a class="link-arrow" href="ceny.html">Все цены{{i:arrow-right}}</a>
     </div>
     <div class="grid grid-4">
-      <a class="card card--link card--stretch" href="usyplenie.html" style="text-decoration:none">
+      <a class="card card--link card--stretch" href="usyplenie.html">
         <span class="card__ico">{{i:steth}}</span>
         <h3>Усыпление на дому</h3>
-        <p>Осмотр, разговор, седация и процедура в спокойной домашней обстановке.</p>
+        <p>Осмотр, разговор, седация и процедура в спокойной домашней обстановке. {{price:euth}}</p>
         <span class="link-arrow card__foot">Подробнее{{i:arrow-right}}</span>
       </a>
-      <a class="card card--link card--stretch" href="kremaciya.html#individualnaya" style="text-decoration:none">
+      <a class="card card--link card--stretch" href="kremaciya.html#individualnaya">
         <span class="card__ico">{{i:urn}}</span>
         <h3>Индивидуальная кремация</h3>
-        <p>Отдельная кремация и возврат праха в урне. По желанию — фото- и видеоотчёт.</p>
+        <p>Отдельная кремация и возврат праха в урне. По желанию — фото- и видеоотчёт. {{price:individual}}</p>
         <span class="link-arrow card__foot">Подробнее{{i:arrow-right}}</span>
       </a>
-      <a class="card card--link card--stretch" href="kremaciya.html#obshchaya" style="text-decoration:none">
+      <a class="card card--link card--stretch" href="kremaciya.html#obshchaya">
         <span class="card__ico">{{i:flame}}</span>
         <h3>Общая кремация</h3>
-        <p>Кремация вместе с другими животными, без возврата праха.</p>
+        <p>Кремация вместе с другими животными, без возврата праха. {{price:common}}</p>
         <span class="link-arrow card__foot">Подробнее{{i:arrow-right}}</span>
       </a>
-      <a class="card card--link card--stretch" href="kremaciya.html#vyvoz" style="text-decoration:none">
+      <a class="card card--link card--stretch" href="vyvoz.html">
         <span class="card__ico">{{i:truck}}</span>
         <h3>Вывоз тела</h3>
-        <p>Заберём питомца из дома или клиники и бережно доставим на кремацию.</p>
+        <p>Заберём питомца из дома или клиники и доставим на кремацию. {{price:pickup}}</p>
         <span class="link-arrow card__foot">Подробнее{{i:arrow-right}}</span>
       </a>
     </div>
     <div class="chip-row services-chips">
-      <a class="chip" href="usyplenie.html#koshki">{{i:cat}}Кошки и коты</a>
-      <a class="chip" href="usyplenie.html#sobaki">{{i:dog}}Собаки</a>
+      <a class="chip" href="usyplenie-koshek.html">{{i:cat}}Усыпление кошек</a>
+      <a class="chip" href="usyplenie-sobak.html">{{i:dog}}Усыпление собак</a>
       <a class="chip" href="usyplenie.html#gryzuny">{{i:rodent}}Грызуны и кролики</a>
       <a class="chip" href="usyplenie.html#pticy">{{i:bird}}Птицы и экзотика</a>
       <a class="chip" href="kremaciya.html#urny">{{i:urn}}Урны для праха</a>
-      <a class="chip" href="kremaciya.html#urny">{{i:route}}Доставка урны</a>
     </div>
+    {{cta:Не знаете, какая услуга нужна? Расскажите о ситуации — подскажем и назовём стоимость.}}
   </div>
 </section>
 
@@ -146,22 +147,23 @@
 <section class="section section--tint" id="kak">
   <div class="container">
     <div class="section-head">
-      <div class="section-head__text"><span class="eyebrow">Порядок работы</span><h2>Как всё происходит</h2></div>
-      <span class="accent-font" style="color:var(--primary)">Сначала объясняем, потом действуем</span>
+      <div class="section-head__text"><span class="eyebrow">Порядок работы</span><h2>Как проходит заказ</h2></div>
+      <span class="accent-font">Сначала объясняем, потом действуем</span>
     </div>
     <ol class="steps">
       <li class="step"><span class="step__num">1</span><h3>Звонок или заявка</h3><p>Расскажите о питомце и ситуации. Ответим на вопросы и уточним адрес.</p></li>
-      <li class="step"><span class="step__num">2</span><h3>Согласование визита</h3><p>Договоримся о времени, удобном вам, и назовём ориентировочную стоимость.</p></li>
+      <li class="step"><span class="step__num">2</span><h3>Время и цена</h3><p>Договоримся о времени визита и назовём ориентировочную стоимость.</p></li>
       <li class="step"><span class="step__num">3</span><h3>Осмотр и разговор</h3><p>Врач осмотрит питомца, ответит на вопросы и подтвердит стоимость.</p></li>
       <li class="step"><span class="step__num">4</span><h3>Процедура</h3><p>Только после вашего согласия. Сначала глубокий сон, затем основной этап.</p></li>
       <li class="step"><span class="step__num">5</span><h3>Кремация и урна</h3><p>По вашему выбору заберём тело, проведём кремацию и вернём прах.</p></li>
     </ol>
+    {{cta:Готовы обсудить визит? Оставьте заявку — перезвоним и согласуем время.}}
   </div>
 </section>
 
 <section class="section" id="vrachi">
   <div class="container">
-    <div class="section-head section-head--center"><div class="section-head__text"><span class="eyebrow">Команда</span><h2>Врачи выездной службы</h2><p class="lead">Спокойно объясняют, отвечают на вопросы и уважают ваше решение.</p></div></div>
+    <div class="section-head section-head--center"><div class="section-head__text"><span class="eyebrow">Команда</span><h2>Врачи выездной службы</h2><p class="lead">Кто приедет к вашему питомцу: имя, образование и опыт врача.</p></div></div>
     {{part:team}}
   </div>
 </section>
@@ -171,11 +173,11 @@
     <div class="section-head"><div class="section-head__text"><span class="eyebrow">Одна служба — все организационные вопросы</span><h2>От первого звонка до урны с прахом</h2><p class="lead">Объясняем порядок действий и согласуем каждую услугу заранее.</p></div></div>
     <div class="grid grid-3">
       <article class="feature-card">
-        <div class="feature-card__media">{{i:truck}}<span class="chip">{{i:pin}}{{part:city}} {{part:region}}</span></div>
+        <div class="feature-card__media">{{i:truck}}<span class="chip">{{i:pin}}Выезд на дом</span></div>
         <div class="feature-card__body">
           <h3>Выезд и вывоз тела</h3>
           <p>Врач приезжает на дом. Если питомец уже умер, можно отдельно заказать вывоз и кремацию.</p>
-          <div class="feature-card__links"><a class="link-arrow" href="kremaciya.html#vyvoz">Как устроен вывоз{{i:arrow-right}}</a></div>
+          <div class="feature-card__links"><a class="link-arrow" href="vyvoz.html">Как устроен вывоз{{i:arrow-right}}</a></div>
         </div>
       </article>
       <article class="feature-card">
@@ -206,18 +208,19 @@
 <section class="section" id="otzyvy">
   <div class="container">
     <div class="section-head">
-      <div class="section-head__text"><span class="eyebrow">Отзывы владельцев</span><h2>Что о нас говорят</h2><p class="muted">Публикуем отзывы только с согласия авторов. Этот раздел пока заполняется.</p></div>
+      <div class="section-head__text"><span class="eyebrow">Отзывы владельцев</span><h2>Что о нас говорят</h2><p class="muted">Публикуем только реальные отзывы и только с согласия авторов.</p></div>
       <div class="slider__nav"><button class="round-btn" type="button" data-slider-prev aria-label="Предыдущий отзыв">{{i:arrow-left}}</button><button class="round-btn" type="button" data-slider-next aria-label="Следующий отзыв">{{i:arrow-right}}</button></div>
     </div>
     <div class="slider" data-slider>
-      <div class="slider__track" tabindex="0" aria-label="Отзывы">
-        <article class="review"><div class="review__head"><span class="review__avatar">{{i:user}}</span><span class="review__who"><strong>Имя владельца</strong><small>Владелец кошки</small></span></div><p class="review__text">Здесь будет отзыв владельца. Добавьте реальный текст, полученный с согласия автора.</p><span class="review__tag">{{i:steth}}Выезд врача</span></article>
-        <article class="review"><div class="review__head"><span class="review__avatar">{{i:user}}</span><span class="review__who"><strong>Имя владельца</strong><small>Владелец собаки</small></span></div><p class="review__text">Здесь будет отзыв владельца. Добавьте реальный текст, полученный с согласия автора.</p><span class="review__tag">{{i:urn}}Индивидуальная кремация</span></article>
-        <article class="review"><div class="review__head"><span class="review__avatar">{{i:user}}</span><span class="review__who"><strong>Имя владельца</strong><small>Владелец питомца</small></span></div><p class="review__text">Здесь будет отзыв владельца. Добавьте реальный текст, полученный с согласия автора.</p><span class="review__tag">{{i:chat}}Консультация</span></article>
-        <article class="review"><div class="review__head"><span class="review__avatar">{{i:user}}</span><span class="review__who"><strong>Имя владельца</strong><small>Владелец питомца</small></span></div><p class="review__text">Здесь будет отзыв владельца. Добавьте реальный текст, полученный с согласия автора.</p><span class="review__tag">{{i:truck}}Вывоз и кремация</span></article>
-      </div>
+      <div class="slider__track" tabindex="0" aria-label="Отзывы">{{part:reviews}}</div>
     </div>
-    <p style="margin-top:20px"><a class="link-arrow" href="otzyvy.html">Оставить отзыв{{i:arrow-right}}</a></p>
+    <div class="reviews-foot">{{part:review-links}}<a class="link-arrow" href="otzyvy.html">Все отзывы и обратная связь{{i:arrow-right}}</a></div>
+  </div>
+</section>
+
+<section class="section section--tint section--tight" id="fakty">
+  <div class="container">
+    {{part:facts}}
   </div>
 </section>
 
@@ -233,7 +236,7 @@
       <div class="section-head__text"><h2>Частые вопросы</h2></div>
       <a class="link-arrow" href="faq.html">Все вопросы и ответы{{i:arrow-right}}</a>
     </div>
-    {{part:faq-home}}
+    {{faq:vkljuchaet,cena,kogda,bol,ryadom,dlitsya,noch,kvartira,rayon,vidy,umer,format}}
   </div>
 </section>
 

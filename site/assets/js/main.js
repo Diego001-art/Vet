@@ -1,4 +1,5 @@
-/* «Мягкий Свет» — интерактив сайта. Настройки берутся из config.js */
+/* «Мягкий Свет» — интерактив сайта. Данные — в config.js (генерируется из _src/site.json).
+   Контакты, цены и Schema уже записаны в HTML при сборке; скрипт отвечает только за поведение. */
 (function () {
   "use strict";
 
@@ -8,29 +9,77 @@
   var icon = function (name) { return '<svg class="icon" aria-hidden="true"><use href="#i-' + name + '"/></svg>'; };
   var rub = function (n) { return Number(n).toLocaleString("ru-RU") + " ₽"; };
   var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var isNum = function (v) { return typeof v === "number" && isFinite(v); };
+  var PH_PRICE = '<span class="tk">[ADD REAL PRICE]</span>';
+  var priceHtml = function (v) { return isNum(v) ? rub(v) : PH_PRICE; };
 
-  /* ---------- 1. Подстановка данных из config.js ---------- */
-  function applyConfig() {
-    $$("[data-site]").forEach(function (el) {
-      var key = el.getAttribute("data-site");
-      if (C[key] !== undefined && C[key] !== null) el.textContent = C[key];
+  /* ---------- 1. Аналитика: события и загрузка счётчиков после согласия ---------- */
+  var A = C.analytics || {};
+  var hasAnalytics = !!(A.ga4 || A.metrika || A.clarity);
+  window.dataLayer = window.dataLayer || [];
+
+  function track(event, params) {
+    params = params || {};
+    params.page_path = location.pathname;
+    window.dataLayer.push(Object.assign({ event: event }, params));
+    try { if (window.gtag) window.gtag("event", event, params); } catch (e) {}
+    try { if (window.ym && A.metrika) window.ym(Number(A.metrika), "reachGoal", event, params); } catch (e) {}
+    try { if (window.clarity) window.clarity("event", event); } catch (e) {}
+  }
+  window.siteTrack = track;
+
+  function loadScript(src, onload) {
+    var s = document.createElement("script"); s.async = true; s.src = src; if (onload) s.onload = onload; document.head.appendChild(s);
+  }
+  function loadAnalytics() {
+    if (A.ga4) {
+      loadScript("https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(A.ga4));
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag("js", new Date());
+      window.gtag("config", A.ga4);
+    }
+    if (A.metrika) {
+      window.ym = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments); };
+      window.ym.l = Date.now();
+      loadScript("https://mc.yandex.ru/metrika/tag.js");
+      window.ym(Number(A.metrika), "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: false });
+    }
+    if (A.clarity) {
+      window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
+      loadScript("https://www.clarity.ms/tag/" + encodeURIComponent(A.clarity));
+    }
+  }
+  function getConsent() { try { return localStorage.getItem("ms-consent"); } catch (e) { return null; } }
+  function setConsent(v) { try { localStorage.setItem("ms-consent", v); } catch (e) {} }
+
+  function initAnalytics() {
+    if (hasAnalytics) {
+      var c = getConsent();
+      var banner = $("#cookie");
+      if (c === "yes") loadAnalytics();
+      else if (c !== "no" && banner) {
+        banner.hidden = false;
+        $$("[data-consent]", banner).forEach(function (b) {
+          b.addEventListener("click", function () {
+            var v = b.getAttribute("data-consent");
+            setConsent(v); banner.hidden = true;
+            if (v === "yes") loadAnalytics();
+          });
+        });
+      }
+    }
+    // Клики по телефону и мессенджерам
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest("a[href]");
+      if (!a) return;
+      var href = a.getAttribute("href");
+      if (href.indexOf("tel:") === 0) track("phone_click", { link_url: href });
+      else if (/wa\.me|whatsapp/i.test(href)) track("whatsapp_click", { link_url: href });
+      else if (/t\.me\//i.test(href)) track("telegram_click", { link_url: href });
     });
-    $$("[data-site-href='tel']").forEach(function (el) { if (C.phoneHref) el.setAttribute("href", "tel:" + C.phoneHref); });
-    $$("[data-site-href='mailto']").forEach(function (el) { if (C.email) el.setAttribute("href", "mailto:" + C.email); });
-    $$("[data-site-block]").forEach(function (el) {
-      var key = el.getAttribute("data-site-block");
-      var val = C[key];
-      var empty = !val || (Array.isArray(val) && !val.length);
-      el.hidden = empty;
-    });
-    $$("[data-site-list]").forEach(function (el) {
-      var list = C[el.getAttribute("data-site-list")] || [];
-      el.innerHTML = list.map(function (item) {
-        return '<a class="chip" href="' + esc(item.url) + '" target="_blank" rel="noopener">' + icon("chat") + esc(item.label) + "</a>";
-      }).join("");
-    });
-    $$("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
-    if (C.demoPrices) document.documentElement.classList.add("is-demo-prices");
+    // Просмотр страницы услуги
+    var svc = document.body.getAttribute("data-service");
+    if (svc) track("service_page_view", { service: svc });
   }
 
   /* ---------- 2. Шапка, мега-меню, мобильное меню ---------- */
@@ -38,7 +87,6 @@
     var header = $(".site-header");
     var backdrop = $(".nav-backdrop");
     if (!header) return;
-
     var setH = function () { document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px"); };
     setH();
     window.addEventListener("resize", setH);
@@ -73,7 +121,6 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeAll(); closeMobile(); } });
     document.addEventListener("click", function (e) { if (!e.target.closest(".nav")) closeAll(); });
 
-    // Мобильное меню
     var burger = $(".topbar__burger");
     var menu = $("#mobile-menu");
     function closeMobile() {
@@ -104,126 +151,31 @@
     window.__closeMobileMenu = closeMobile;
   }
 
-  /* ---------- 3. Таблицы цен ---------- */
-  var TAB_GROUPS = [
-    { id: "cat", label: "Кошки", icon: "cat", species: ["cat"] },
-    { id: "dog", label: "Собаки", icon: "dog", species: ["dog"] },
-    { id: "other", label: "Другие животные", icon: "paw", species: ["small", "bird", "exotic"] }
-  ];
-
-  function minPrice(serviceId) {
-    var s = C.services && C.services[serviceId];
-    if (!s) return null;
-    return Math.min.apply(null, Object.keys(s.prices).map(function (k) { return s.prices[k]; }));
-  }
-
-  function priceRows(group, cols) {
-    var rows = [];
-    group.species.forEach(function (sid) {
-      var sp = C.species[sid];
-      sp.weights.forEach(function (wid) {
-        var w = C.weights.filter(function (x) { return x.id === wid; })[0];
-        var name = group.species.length === 1 ? w.label : sp.label + (sp.weights.length > 1 ? ", " + w.label : "");
-        rows.push("<tr><th scope=\"row\">" + esc(name) + "</th>" + cols.map(function (c) { return "<td>" + rub(C.services[c].prices[wid]) + "</td>"; }).join("") + "</tr>");
-      });
-    });
-    return rows.join("");
-  }
-
-  function renderPriceTables() {
-    $$("[data-price-table]").forEach(function (box, n) {
-      var mode = box.getAttribute("data-price-table"); // all | euth | cremation
-      var cols = mode === "euth" ? ["euth"] : mode === "cremation" ? ["common", "individual"] : ["euth", "common", "individual"];
-      var tabsId = "pt" + n;
-      var html = '<div class="tabs" role="tablist" aria-label="Вид питомца">';
-      TAB_GROUPS.forEach(function (g, i) {
-        html += '<button class="tab" role="tab" type="button" id="' + tabsId + "-t" + i + '" aria-controls="' + tabsId + "-p" + i + '" aria-selected="' + (i === 0) + '" tabindex="' + (i === 0 ? 0 : -1) + '">' + icon(g.icon) + esc(g.label) + "</button>";
-      });
-      html += "</div>";
-      TAB_GROUPS.forEach(function (g, i) {
-        html += '<div class="table-wrap" role="tabpanel" id="' + tabsId + "-p" + i + '" aria-labelledby="' + tabsId + "-t" + i + '"' + (i === 0 ? "" : " hidden") + ">";
-        html += '<table class="price-table"><thead><tr><th scope="col">' + (g.species.length > 1 ? "Питомец" : "Вес питомца") + "</th>";
-        cols.forEach(function (c) { html += '<th scope="col">' + esc(C.services[c].label) + "<br><small>" + esc(C.services[c].note) + "</small></th>"; });
-        html += "</tr></thead><tbody>" + priceRows(g, cols);
-        if (mode !== "euth") {
-          html += '<tr class="row-sep"><th scope="row">' + esc(C.extras.pickup.label) + '</th><td colspan="' + cols.length + '">' + rub(C.extras.pickup.price) + "</td></tr>";
-        }
-        html += '<tr><th scope="row">Выезд за город</th><td class="muted" colspan="' + cols.length + '">по зоне: от ' + rub(zoneMin()) + ' · <a href="zona.html">зоны выезда</a></td></tr>';
-        html += "</tbody></table></div>";
-      });
-      box.innerHTML = html;
-      initTabs(box);
-    });
-
-    $$("[data-price-from]").forEach(function (el) {
-      var id = el.getAttribute("data-price-from");
-      var v = C.services[id] ? minPrice(id) : C.extras[id] ? C.extras[id].price : null;
-      if (v !== null) el.textContent = rub(v);
-    });
-  }
-
-  function zoneMin() {
-    var vals = (C.zones || []).map(function (z) { return z.price; }).filter(function (p) { return typeof p === "number" && p > 0; });
-    return vals.length ? Math.min.apply(null, vals) : 0;
-  }
-
-  function initTabs(root) {
-    var tabs = $$("[role=tab]", root);
-    var select = function (t) {
-      tabs.forEach(function (x) {
-        var on = x === t;
-        x.setAttribute("aria-selected", String(on));
-        x.tabIndex = on ? 0 : -1;
-        document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
-      });
-    };
-    tabs.forEach(function (t, i) {
-      t.addEventListener("click", function () { select(t); });
-      t.addEventListener("keydown", function (e) {
-        var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-        if (!d) return;
-        var next = tabs[(i + d + tabs.length) % tabs.length];
-        next.focus(); select(next);
+  /* ---------- 3. Вкладки таблиц цен (таблицы уже в HTML) ---------- */
+  function initTabs() {
+    $$("[data-price-tabs]").forEach(function (root) {
+      var tabs = $$("[role=tab]", root);
+      var select = function (t) {
+        tabs.forEach(function (x) {
+          var on = x === t;
+          x.setAttribute("aria-selected", String(on));
+          x.tabIndex = on ? 0 : -1;
+          document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
+        });
+      };
+      tabs.forEach(function (t, i) {
+        t.addEventListener("click", function () { select(t); });
+        t.addEventListener("keydown", function (e) {
+          var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+          if (!d) return;
+          var next = tabs[(i + d + tabs.length) % tabs.length];
+          next.focus(); select(next);
+        });
       });
     });
   }
 
-  /* ---------- 4. Зоны выезда ---------- */
-  function renderZones() {
-    $$("[data-zone-list]").forEach(function (el) {
-      el.innerHTML = (C.zones || []).map(function (z) {
-        var p = z.price === null ? "по договорённости" : z.price === 0 ? "выезд без доплаты" : "доплата " + rub(z.price);
-        return '<div class="zone__row"><span class="zone__row-name"><span class="zone__dot" style="background:' + esc(z.color) + '"></span>' + esc(z.label) + '</span><span class="zone__row-note">' + esc(z.note) + "<br>" + p + "</span></div>";
-      }).join("");
-    });
-    $$("[data-zone-map]").forEach(function (el) {
-      var zones = (C.zones || []).slice().reverse();
-      var radii = [140, 112, 78, 44];
-      var rings = zones.map(function (z, i) {
-        var r = radii[i] || 30;
-        var dashed = z.price === null ? ' stroke-dasharray="6 6" fill-opacity="0.18"' : ' fill-opacity="0.32"';
-        return '<circle cx="200" cy="155" r="' + r + '" fill="' + esc(z.color) + '" stroke="' + esc(z.color) + '" stroke-width="1.5"' + dashed + "/>";
-      }).join("");
-      var labels = zones.map(function (z, i) {
-        var r = radii[i] || 30;
-        if (i === zones.length - 1) return "";
-        return '<text x="200" y="' + (155 - r + 18) + '" text-anchor="middle" font-size="11" font-weight="600" style="fill:var(--muted)">' + esc(z.label) + "</text>";
-      }).join("");
-      el.innerHTML =
-        '<svg viewBox="0 0 400 310" role="img" aria-label="Схема зон выезда: от центра города к пригородам">' +
-        '<g stroke="var(--line)" stroke-width="2" fill="none" opacity="0.9"><path d="M20 230 C 120 190, 160 170, 200 155 S 320 90, 390 60"/><path d="M60 30 C 120 90, 170 130, 200 155 S 260 250, 300 300"/><path d="M0 150 H400"/></g>' +
-        rings + labels +
-        '<g transform="translate(200 145)"><circle r="15" style="fill:var(--surface)"/><path d="M0 9s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" style="fill:var(--primary)"/><circle cy="-2" r="2.6" style="fill:var(--surface)"/></g>' +
-        '<text x="200" y="177" text-anchor="middle" font-size="11.5" font-weight="700" style="fill:var(--heading);paint-order:stroke;stroke:var(--surface);stroke-width:3px">' + esc(C.city || "Город") + "</text>" +
-        "</svg>";
-    });
-  }
-
-  /* ---------- 5. Калькулятор ---------- */
-  function initCalcs() {
-    $$("[data-calc]").forEach(function (root, idx) { new Calc(root, idx); });
-  }
-
+  /* ---------- 4. Калькулятор и быстрый запрос цены ---------- */
   function Calc(root, idx) {
     this.root = root;
     this.uid = "calc" + idx;
@@ -232,7 +184,7 @@
   }
   Calc.prototype.labels = ["Ситуация", "Питомец", "Услуги", "Расчёт"];
   Calc.prototype.render = function () {
-    var s = this.state, self = this, u = this.uid;
+    var s = this.state, self = this;
     var steps = '<ol class="calc__steps">' + this.labels.map(function (l, i) {
       var n = i + 1;
       var cls = n === s.step ? "is-active" : n < s.step ? "is-done" : "";
@@ -245,7 +197,7 @@
       body += '<div class="options" role="radiogroup" aria-label="Ситуация">' +
         this.option("radio", "situation", "vet", s.situation === "vet", "steth", "Нужен ветеринар на дом", "Осмотр, разговор и процедура, если вы примете такое решение") +
         this.option("radio", "situation", "died", s.situation === "died", "heart", "Питомец уже умер", "Вывоз тела и кремация") + "</div>";
-      body += '<p class="calc__hint">' + icon("chat") + ' Ещё не решили? <button type="button" class="calc-inline-link" data-open="callback" data-topic="Консультация">Получите консультацию</button> — это бесплатно и ни к чему не обязывает.</p>';
+      body += '<p class="calc__hint">' + icon("chat") + ' Ещё не решили? <button type="button" class="calc-inline-link" data-open="callback" data-topic="Консультация">Задайте вопрос</button> — расскажем, какие есть варианты.</p>';
     }
     if (s.step === 2) {
       body += '<span class="eyebrow">О питомце</span><h3>Кто ваш питомец?</h3>';
@@ -267,12 +219,12 @@
       body += '<span class="eyebrow">Состав услуг</span><h3>Что нужно организовать?</h3>';
       if (s.situation === "vet") {
         body += '<div class="calc__group"><span class="calc__group-title">Визит врача</span><div class="options">' +
-          '<div class="option option--compact" aria-disabled="true"><span class="option__ico">' + icon("steth") + '</span><span class="option__text"><strong>' + esc(C.services.euth.label) + '</strong><small>Входит в расчёт</small></span><span class="option__price">' + rub(C.services.euth.prices[s.weight]) + "</span></div></div></div>";
+          '<div class="option option--compact"><span class="option__ico">' + icon("steth") + '</span><span class="option__text"><strong>' + esc(C.services.euth.label) + '</strong><small>Входит в расчёт</small></span><span class="option__price">' + priceHtml(C.services.euth.prices[s.weight]) + "</span></div></div></div>";
       }
       var crem = [["individual", C.services.individual], ["common", C.services.common]];
       if (s.situation === "vet") crem.push(["none", { label: "Без кремации", note: "Решу позже или организую сам(а)", prices: null }]);
       body += '<div class="calc__group"><span class="calc__group-title">Кремация</span><div class="options" role="radiogroup" aria-label="Кремация">' + crem.map(function (c) {
-        var price = c[1].prices ? rub(c[1].prices[s.weight]) : "";
+        var price = c[1].prices ? priceHtml(c[1].prices[s.weight]) : "";
         return self.option("radio", "cremation", c[0], s.cremation === c[0], c[0] === "none" ? "close" : "flame", c[1].label, c[1].note, false, price);
       }).join("") + "</div></div>";
       if (s.cremation !== "none") {
@@ -280,31 +232,31 @@
         if (s.cremation === "individual") ex = ex.concat(["urn", "delivery", "report"]);
         body += '<div class="calc__group"><span class="calc__group-title">Дополнительно</span><div class="options">' + ex.map(function (k) {
           var e = C.extras[k];
-          return self.option("checkbox", k, "1", !!s[k], "", e.label, e.note, false, rub(e.price), true);
+          return self.option("checkbox", k, "1", !!s[k], "", e.label, e.note, false, priceHtml(e.price), true);
         }).join("") + "</div></div>";
       }
       if (C.zones && C.zones.length) {
         body += '<div class="calc__group"><span class="calc__group-title">Где находится питомец</span><div class="options options--sm" role="radiogroup" aria-label="Зона выезда">' + C.zones.map(function (z) {
-          var p = z.price === null ? "по договорённости" : z.price === 0 ? "без доплаты" : "+" + rub(z.price);
+          var p = isNum(z.price) ? (z.price === 0 ? "без доплаты" : "+" + rub(z.price)) : "доплата уточняется";
           return self.option("radio", "zone", z.id, s.zone === z.id, "", z.label, p, true);
         }).join("") + "</div></div>";
       }
     }
     if (s.step === 4) {
       var r = this.calcTotal();
-      body += '<span class="eyebrow">Предварительный расчёт</span><h3>Ориентировочная стоимость</h3>';
+      body += '<span class="eyebrow">Предварительный расчёт</span><h3>' + (r.unknown ? "Ваш запрос стоимости" : "Ориентировочная стоимость") + "</h3>";
       body += '<div class="calc-summary">' + r.rows.map(function (row) {
         return '<div class="calc-summary__row' + (row.muted ? " calc-summary__row--muted" : "") + '"><span>' + esc(row.label) + "</span><span>" + row.value + "</span></div>";
-      }).join("") + '<div class="calc-summary__total"><span>Итого' + (r.approx ? ", от" : "") + '</span><strong>' + rub(r.total) + "</strong></div></div>";
-      body += '<p class="calc__hint">Окончательную стоимость подтвердим по телефону и до начала работы. Расчёт не является публичной офертой.' + (C.demoPrices ? ' <span class="badge">Демо-цены</span>' : "") + "</p>";
-      body += '<div class="btn-row"><button type="button" class="btn btn--primary" data-open="callback" data-topic="Расчёт стоимости" data-comment="' + esc(r.summary) + '">' + icon("phone") + "Обсудить расчёт</button><button type=\"button\" class=\"btn\" data-calc-restart>" + icon("arrow-left") + "Пересчитать</button></div>";
+      }).join("") + '<div class="calc-summary__total"><span>Итого</span><strong>' + (r.unknown ? "назовём по телефону" : (r.approx ? "от " : "") + rub(r.total)) + "</strong></div></div>";
+      body += '<p class="calc__hint">Окончательную стоимость подтвердим до начала работы. Расчёт не является публичной офертой.</p>';
+      body += '<div class="btn-row"><button type="button" class="btn btn--primary" data-open="callback" data-topic="Узнать цену" data-details="' + esc(r.summary) + '" data-booking="1">' + icon("send") + 'Отправить запрос</button><button type="button" class="btn" data-calc-restart>' + icon("arrow-left") + "Пересчитать</button></div>";
     }
 
     var foot = '<div class="calc__foot"><button type="button" class="btn btn--sm" data-calc-back' + (s.step === 1 ? " disabled" : "") + ">" + icon("arrow-left") + 'Назад</button><span class="calc__counter">Шаг ' + s.step + " из 4</span>" +
-      (s.step < 4 ? '<button type="button" class="btn btn--primary btn--sm" data-calc-next>' + (s.step === 3 ? "Показать расчёт" : "Продолжить") + icon("arrow-right") + "</button>" : '<span style="width:96px"></span>') + "</div>";
+      (s.step < 4 ? '<button type="button" class="btn btn--primary btn--sm" data-calc-next>' + (s.step === 3 ? "Показать расчёт" : "Продолжить") + icon("arrow-right") + "</button>" : '<span class="calc__foot-spacer"></span>') + "</div>";
 
     this.root.innerHTML = '<div class="calc">' + steps + '<div class="calc__body" aria-live="polite">' + body + "</div>" + foot + "</div>" +
-      '<p class="calc__privacy">' + icon("lock") + "Расчёт выполняется в браузере. Чтобы увидеть сумму, контакты оставлять не нужно.</p>";
+      '<p class="calc__privacy">' + icon("lock") + "Расчёт выполняется в браузере. Чтобы увидеть его, контакты оставлять не нужно.</p>";
     this.bind();
   };
   Calc.prototype.option = function (type, name, value, checked, ico, title, sub, compact, price, row) {
@@ -327,18 +279,12 @@
           if (allowed.indexOf(s.weight) === -1) s.weight = allowed[0];
           self.render(); self.focusFirst();
         }
-        if (k === "situation") {
-          if (s.situation === "died" && s.cremation === "none") s.cremation = "individual";
-          s.pickup = true;
-        }
-        if (k === "cremation") {
-          if (s.cremation === "individual") s.urn = true;
-          self.render(); self.focusFirst();
-        }
+        if (k === "situation") { if (s.situation === "died" && s.cremation === "none") s.cremation = "individual"; s.pickup = true; }
+        if (k === "cremation") { if (s.cremation === "individual") s.urn = true; self.render(); self.focusFirst(); }
       });
     });
     var next = $("[data-calc-next]", this.root), back = $("[data-calc-back]", this.root), restart = $("[data-calc-restart]", this.root);
-    if (next) next.addEventListener("click", function () { s.step = Math.min(4, s.step + 1); self.render(); self.focusFirst(); });
+    if (next) next.addEventListener("click", function () { s.step = Math.min(4, s.step + 1); self.render(); self.focusFirst(); if (s.step === 4) track("calculator_complete", { situation: s.situation, species: s.species }); });
     if (back) back.addEventListener("click", function () { s.step = Math.max(1, s.step - 1); self.render(); self.focusFirst(); });
     if (restart) restart.addEventListener("click", function () { s.step = 1; self.render(); self.focusFirst(); });
   };
@@ -347,13 +293,16 @@
     if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
   };
   Calc.prototype.calcTotal = function () {
-    var s = this.state, rows = [], total = 0, approx = false, parts = [];
+    var s = this.state, rows = [], total = 0, approx = false, unknown = false, parts = [];
     var sp = C.species[s.species];
     var w = C.weights.filter(function (x) { return x.id === s.weight; })[0];
     var petLabel = sp.short + (sp.weights.length > 1 ? ", " + w.label : "");
     rows.push({ label: "Питомец", value: esc(petLabel), muted: true });
     parts.push("Питомец: " + petLabel);
-    var add = function (label, price) { rows.push({ label: label, value: rub(price) }); total += price; parts.push(label + " — " + rub(price)); };
+    var add = function (label, price) {
+      if (isNum(price)) { rows.push({ label: label, value: rub(price) }); total += price; parts.push(label + " — " + rub(price)); }
+      else { rows.push({ label: label, value: PH_PRICE }); unknown = true; parts.push(label); }
+    };
     if (s.situation === "vet") add(C.services.euth.label, C.services.euth.prices[s.weight]);
     if (s.cremation !== "none") {
       add(C.services[s.cremation].label, C.services[s.cremation].prices[s.weight]);
@@ -365,20 +314,21 @@
     }
     var z = (C.zones || []).filter(function (x) { return x.id === s.zone; })[0];
     if (z) {
-      if (z.price === null) { rows.push({ label: "Выезд: " + z.label, value: "по договорённости", muted: true }); approx = true; parts.push("Выезд: " + z.label + " — по договорённости"); }
+      if (!isNum(z.price)) { rows.push({ label: "Выезд: " + z.label, value: "доплата уточняется", muted: true }); approx = true; parts.push("Выезд: " + z.label); }
       else if (z.price === 0) { rows.push({ label: "Выезд: " + z.label, value: "без доплаты", muted: true }); parts.push("Выезд: " + z.label); }
       else add("Выезд: " + z.label, z.price);
     }
-    parts.push("Итого: " + (approx ? "от " : "") + rub(total));
-    return { rows: rows, total: total, approx: approx, summary: parts.join("; ") };
+    if (!unknown) parts.push("Итого: " + (approx ? "от " : "") + rub(total));
+    return { rows: rows, total: total, approx: approx, unknown: unknown, summary: parts.join("; ") };
   };
+  function initCalcs() { $$("[data-calc]").forEach(function (root, idx) { new Calc(root, idx); }); }
 
-  /* ---------- 6. Слайдер ---------- */
+  /* ---------- 5. Слайдер ---------- */
   function initSliders() {
     $$("[data-slider]").forEach(function (box) {
       var track = $(".slider__track", box);
-      var prev = $("[data-slider-prev]", box.parentNode.parentNode) || $("[data-slider-prev]", box);
-      var next = $("[data-slider-next]", box.parentNode.parentNode) || $("[data-slider-next]", box);
+      var scope = box.parentNode;
+      var prev = $("[data-slider-prev]", scope), next = $("[data-slider-next]", scope);
       if (!track) return;
       var step = function () { var c = track.children[0]; return c ? c.getBoundingClientRect().width + 20 : 300; };
       var update = function () {
@@ -393,7 +343,8 @@
     });
   }
 
-  /* ---------- 7. Формы ---------- */
+  /* ---------- 6. Формы ---------- */
+  var BOOKING_TOPICS = ["Усыпление на дому", "Вывоз тела", "Индивидуальная кремация", "Общая кремация", "Узнать цену"];
   function formatPhone(v) {
     var d = v.replace(/\D/g, "");
     if (!d) return "";
@@ -423,40 +374,43 @@
         if (tel && tel.required && tel.value.replace(/\D/g, "").length !== 11) {
           ok = false; var f = tel.closest(".field"); f.classList.add("is-invalid"); $(".field__error", f).textContent = "Введите номер полностью: +7 и ещё 10 цифр.";
         }
-        $$("[required]:not([type=tel]):not([type=checkbox])", form).forEach(function (inp) {
-          if (!inp.value.trim()) { ok = false; var f = inp.closest(".field"); if (f) { f.classList.add("is-invalid"); var er = $(".field__error", f); if (er) er.textContent = "Заполните это поле."; } }
-        });
         var consent = $("input[name=consent]", form);
         var cl = consent && consent.closest(".consent");
         if (cl) cl.classList.remove("is-invalid");
         if (consent && !consent.checked) { ok = false; cl.classList.add("is-invalid"); }
-        if (!ok) { var first = $(".is-invalid input, .is-invalid textarea, .consent.is-invalid input", form); if (first) first.focus(); return; }
+        if (!ok) { var first = $(".is-invalid input, .consent.is-invalid input", form); if (first) first.focus(); return; }
 
         var data = {};
         new FormData(form).forEach(function (v, k) { data[k] = v; });
         data.form = form.getAttribute("data-form");
         data.page = location.pathname;
+        var isBooking = BOOKING_TOPICS.indexOf(data.topic) !== -1 || !!data.details;
         var status = $(".form-status", form);
         var btn = $("button[type=submit]", form);
         var done = function (title, text, good) {
           status.hidden = false;
           status.innerHTML = icon(good ? "check" : "info") + "<div><strong>" + esc(title) + "</strong>" + esc(text) + "</div>";
         };
+        var success = function () {
+          track("form_submit", { form: data.form, topic: data.topic });
+          if (isBooking) track("booking_request", { topic: data.topic, has_calc: !!data.details });
+        };
         if (C.formEndpoint) {
           btn.disabled = true;
           fetch(C.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
-            .then(function (r) { if (!r.ok) throw new Error(r.status); form.reset(); done("Заявка отправлена", "Мы свяжемся с вами в ближайшее время.", true); })
-            .catch(function () { done("Не получилось отправить заявку", "Пожалуйста, позвоните нам: " + (C.phone || ""), false); })
+            .then(function (r) { if (!r.ok) throw new Error(r.status); form.reset(); success(); done("Заявка отправлена", " Мы свяжемся с вами в ближайшее время.", true); })
+            .catch(function () { done("Не получилось отправить заявку", " Пожалуйста, позвоните нам" + (C.phone ? ": " + C.phone : "") + ".", false); })
             .then(function () { btn.disabled = false; });
         } else {
           form.reset();
-          done("Демо-режим: заявка не отправлена", " Форма проверена и работает, но обработчик ещё не подключён. Укажите formEndpoint в config.js.", true);
+          success();
+          done("Демо-режим: заявка не отправлена", " Форма работает, но обработчик ещё не подключён (formEndpoint в _src/site.json).", true);
         }
       });
     });
   }
 
-  /* ---------- 8. Модальные окна ---------- */
+  /* ---------- 7. Модальные окна ---------- */
   function initModals() {
     document.addEventListener("click", function (e) {
       var opener = e.target.closest("[data-open]");
@@ -467,11 +421,12 @@
       e.preventDefault();
       if (window.__closeMobileMenu) window.__closeMobileMenu();
       var topic = opener.getAttribute("data-topic");
-      var comment = opener.getAttribute("data-comment");
+      var details = opener.getAttribute("data-details") || "";
       var sel = $("select[name=topic]", dlg);
       if (sel && topic) { var has = $$("option", sel).some(function (o) { return o.value === topic; }); if (has) sel.value = topic; }
-      var ta = $("textarea[name=comment]", dlg);
-      if (ta && comment) ta.value = comment;
+      var hid = $("input[name=details]", dlg), note = $(".form-details", dlg);
+      if (hid) hid.value = details;
+      if (note) { note.hidden = !details; note.textContent = details ? "К заявке приложен расчёт: " + details : ""; }
       var st = $(".form-status", dlg); if (st) st.hidden = true;
       dlg.showModal();
       var focusEl = $("input:not([type=hidden])", dlg); if (focusEl) setTimeout(function () { focusEl.focus(); }, 30);
@@ -483,25 +438,25 @@
     });
   }
 
-  /* ---------- 9. Поиск по сайту ---------- */
+  /* ---------- 8. Поиск по сайту ---------- */
   var INDEX = [
     { t: "Главная", u: "index.html", d: "Усыпление на дому и кремация животных", k: "главная служба" },
-    { t: "Усыпление на дому", u: "usyplenie.html", d: "Как проходит визит врача, показания, подготовка", k: "эвтаназия усыпить усыпление врач на дом" },
-    { t: "Усыпление кошек", u: "usyplenie.html#koshki", d: "Особенности визита для кошек", k: "кошка кот усыпить кошку" },
-    { t: "Усыпление собак", u: "usyplenie.html#sobaki", d: "Крупные и пожилые собаки", k: "собака пёс пес усыпить собаку" },
+    { t: "Усыпление на дому", u: "usyplenie.html", d: "Показания, визит врача, подготовка, цены", k: "эвтаназия усыпить усыпление врач на дом" },
+    { t: "Усыпление кошки на дому", u: "usyplenie-koshek.html", d: "Особенности визита для кошек", k: "кошка кот усыпить кошку" },
+    { t: "Усыпление собаки на дому", u: "usyplenie-sobak.html", d: "Крупные и пожилые собаки, цены по весу", k: "собака пёс пес усыпить собаку" },
     { t: "Грызуны, кролики, хорьки", u: "usyplenie.html#gryzuny", d: "Хомяки, крысы, морские свинки, кролики", k: "хомяк крыса свинка кролик хорёк хорек грызун" },
     { t: "Птицы и экзотические животные", u: "usyplenie.html#pticy", d: "Попугаи, рептилии, черепахи", k: "птица попугай рептилия черепаха экзотика ящерица змея" },
     { t: "Как подготовиться к визиту", u: "usyplenie.html#podgotovka", d: "Что сделать до приезда врача", k: "подготовка подготовиться приезд" },
     { t: "Кремация животных", u: "kremaciya.html", d: "Общая и индивидуальная кремация", k: "кремация кремировать прах крематорий" },
     { t: "Индивидуальная кремация", u: "kremaciya.html#individualnaya", d: "Прах возвращается в урне", k: "индивидуальная прах урна" },
     { t: "Общая кремация", u: "kremaciya.html#obshchaya", d: "Без возврата праха", k: "общая групповая" },
-    { t: "Вывоз тела животного", u: "kremaciya.html#vyvoz", d: "Заберём питомца из дома или клиники", k: "вывоз забрать тело умер умерла" },
+    { t: "Вывоз тела животного", u: "vyvoz.html", d: "Заберём питомца из дома или клиники", k: "вывоз забрать тело умер умерла" },
     { t: "Урны для праха", u: "kremaciya.html#urny", d: "Выбор урны и доставка", k: "урна доставка праха" },
     { t: "Фото- и видеоотчёт", u: "kremaciya.html#otchet", d: "Подтверждение индивидуальной кремации", k: "фото видео отчёт отчет подтверждение" },
     { t: "Цены", u: "ceny.html", d: "Прайс по видам питомцев и весу", k: "цена стоимость прайс сколько стоит" },
-    { t: "Калькулятор стоимости", u: "ceny.html#kalkulyator", d: "Предварительный расчёт за 4 шага", k: "калькулятор расчёт рассчитать" },
-    { t: "О службе", u: "o-nas.html", d: "Принципы работы и врачи", k: "о нас служба врачи команда" },
-    { t: "Зона выезда", u: "zona.html", d: "Город и пригороды, доплаты за выезд", k: "зона выезд география район пригород" },
+    { t: "Калькулятор и запрос цены", u: "ceny.html#kalkulyator", d: "Расчёт за 4 шага", k: "калькулятор расчёт рассчитать" },
+    { t: "О службе", u: "o-nas.html", d: "Кто мы, врачи, опыт", k: "о нас служба врачи команда опыт" },
+    { t: "Зона выезда", u: "zona.html", d: "Районы и пригороды, доплаты за выезд", k: "зона выезд география район пригород" },
     { t: "Полезная информация", u: "stati.html", d: "Памятки для владельцев", k: "статьи памятки советы" },
     { t: "Как подготовиться к визиту ветеринара", u: "stati-podgotovka.html", d: "Памятка владельцу", k: "подготовка визит место прощание" },
     { t: "Общая или индивидуальная кремация", u: "stati-kremaciya.html", d: "Как выбрать формат", k: "выбрать кремацию разница" },
@@ -509,7 +464,7 @@
     { t: "Как пережить уход питомца", u: "stati-poterya.html", d: "Горе, чувство вины, разговор с детьми", k: "горе утрата дети вина поддержка" },
     { t: "Вопросы и ответы", u: "faq.html", d: "Ответы на частые вопросы", k: "вопрос ответ faq больно сколько длится" },
     { t: "Отзывы", u: "otzyvy.html", d: "Обратная связь владельцев", k: "отзыв отзывы обратная связь" },
-    { t: "Контакты", u: "kontakty.html", d: "Телефон, почта, режим работы", k: "контакты телефон почта связаться" },
+    { t: "Контакты", u: "kontakty.html", d: "Телефон, мессенджеры, часы работы", k: "контакты телефон почта whatsapp telegram связаться" },
     { t: "Политика конфиденциальности", u: "privacy.html", d: "Обработка персональных данных", k: "политика персональные данные конфиденциальность" }
   ];
   function runSearch(q) {
@@ -523,10 +478,11 @@
     var inp = $("#search-input");
     if (!inp) return;
     inp.addEventListener("input", function () { runSearch(inp.value); });
-    $$("#search-results").forEach(function (l) { l.addEventListener("click", function (e) { if (e.target.closest("a")) { var d = $("#search-modal"); if (d) d.close(); } }); });
+    var list = $("#search-results");
+    if (list) list.addEventListener("click", function (e) { if (e.target.closest("a")) { var d = $("#search-modal"); if (d) d.close(); } });
   }
 
-  /* ---------- 10. Прочее ---------- */
+  /* ---------- 9. Прочее ---------- */
   function initToTop() {
     var b = $(".to-top");
     if (!b) return;
@@ -561,15 +517,14 @@
     var el = document.getElementById(location.hash.slice(1));
     if (!el) return;
     if (el.tagName === "DETAILS") el.open = true;
-    // Цены и калькулятор дорисовываются скриптом — после этого возвращаемся к якорю
+    // Калькулятор дорисовывается скриптом — после этого возвращаемся к якорю
     window.addEventListener("load", function () { el.scrollIntoView({ block: "start" }); });
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    applyConfig();
+  function start() {
+    initAnalytics();
     initHeader();
-    renderPriceTables();
-    renderZones();
+    initTabs();
     initCalcs();
     initSliders();
     initForms();
@@ -579,5 +534,6 @@
     initSubnav();
     initFilters();
     initHash();
-  });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();

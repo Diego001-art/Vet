@@ -1,26 +1,27 @@
-{"title": "Усыпление животных на дому — Мягкий Свет", "description": "Гуманное усыпление кошек, собак и других питомцев на дому: осмотр врача, седация, время на прощание. Как подготовиться и сколько стоит.", "nav": "usyplenie"}
+{"title": "Усыпление животных на дому{cityIn} — Мягкий Свет", "description": "Гуманное усыпление кошек, собак и других питомцев на дому{cityIn}: сначала осмотр врача, затем седация и процедура. Как подготовиться, сколько стоит, что делать после.", "nav": "usyplenie", "crumbs": [["Усыпление на дому", ""]], "service": {"name": "Усыпление животных на дому", "serviceType": "Эвтаназия животных на дому", "description": "Выезд ветеринарного врача на дом: осмотр, разговор с владельцем, седация и гуманная эвтаназия по медицинским показаниям, время на прощание.", "priceKeys": ["euth"]}}
 <section class="page-hero">
   <div class="container">
-    <ol class="crumbs"><li><a href="index.html">Главная</a></li><li>Усыпление на дому</li></ol>
+    {{crumbs}}
     <div class="page-hero__grid">
       <div class="page-hero__text">
-        <span class="eyebrow">{{part:city}} {{part:region}}</span>
-        <h1>Усыпление животных на дому</h1>
+        <span class="eyebrow">{{d:area}}</span>
+        <h1>Усыпление животных на дому{{cityIn}}</h1>
         <p class="lead">Дома питомец спокойнее: рядом знакомые запахи, любимое место и вы. Врач приедет, осмотрит животное, ответит на вопросы и проведёт процедуру только после вашего решения.</p>
         <div class="btn-row">
           <button class="btn btn--primary" type="button" data-open="callback" data-topic="Усыпление на дому">{{i:chat}}Вызвать врача</button>
-          <a class="btn" href="ceny.html#kalkulyator">{{i:calc}}Рассчитать стоимость</a>
+          <a class="btn" href="ceny.html#kalkulyator">{{i:calc}}Узнать цену</a>
         </div>
+        <p class="hero__contact">{{i:phone}} {{d:phone}} <span class="muted">· {{d:hours}}</span></p>
         <ul class="hero__facts">
           <li>{{i:steth}}<span><strong>Осмотр перед решением</strong>врач оценит состояние</span></li>
           <li>{{i:heart}}<span><strong>Седация</strong>питомец засыпает спокойно</span></li>
         </ul>
       </div>
       <aside class="side-card">
-        <span class="side-card__title">Стоимость <span class="badge demo-flag">Демо-цены</span></span>
-        <div class="tariff"><span class="tariff__ico">{{i:steth}}</span><span class="tariff__name">Усыпление на дому<small>Зависит от веса</small></span><span class="tariff__price"><small>от</small><span data-price-from="euth">—</span></span></div>
-        <div class="tariff"><span class="tariff__ico">{{i:urn}}</span><span class="tariff__name">Индивидуальная кремация<small>С возвратом праха</small></span><span class="tariff__price"><small>от</small><span data-price-from="individual">—</span></span></div>
-        <div class="tariff"><span class="tariff__ico">{{i:flame}}</span><span class="tariff__name">Общая кремация<small>Без возврата праха</small></span><span class="tariff__price"><small>от</small><span data-price-from="common">—</span></span></div>
+        <span class="side-card__title">Стоимость</span>
+        <div class="tariff"><span class="tariff__ico">{{i:steth}}</span><span class="tariff__name">Усыпление на дому<small>Зависит от веса</small></span><span class="tariff__price">{{price:euth}}</span></div>
+        <div class="tariff"><span class="tariff__ico">{{i:urn}}</span><span class="tariff__name">Индивидуальная кремация<small>С возвратом праха</small></span><span class="tariff__price">{{price:individual}}</span></div>
+        <div class="tariff"><span class="tariff__ico">{{i:flame}}</span><span class="tariff__name">Общая кремация<small>Без возврата праха</small></span><span class="tariff__price">{{price:common}}</span></div>
         <a class="link-arrow" href="ceny.html#prajs">Полный прайс{{i:arrow-right}}</a>
       </aside>
     </div>
@@ -54,8 +55,8 @@
     </div>
     <div class="panel panel--tint">
       <span class="note-card__ico">{{i:shield}}</span>
-      <h3>Мы не усыпляем здоровых животных</h3>
-      <p class="muted">Процедуру проводят только по медицинским показаниям. Если причина в поведении, переезде или аллергии, подскажем, к кому обратиться: зоопсихологу, кинологу, в приют или фонд пристройства.</p>
+      <h3>Только по медицинским показаниям</h3>
+      <p class="muted">Процедуру проводят, когда облегчить страдания питомца иначе уже нельзя. Если причина в поведении, переезде или аллергии, подскажем, к кому обратиться: зоопсихологу, кинологу, в приют или фонд пристройства.</p>
       <a class="link-arrow" href="faq.html">Другие вопросы{{i:arrow-right}}</a>
     </div>
   </div>
@@ -69,8 +70,9 @@
       <li class="step"><span class="step__num">2</span><h3>Осмотр</h3><p>Оценивает состояние, смотрит выписки, отвечает на вопросы.</p></li>
       <li class="step"><span class="step__num">3</span><h3>Решение</h3><p>Подтверждает стоимость. Процедура — только с вашего согласия.</p></li>
       <li class="step"><span class="step__num">4</span><h3>Сон и процедура</h3><p>Седация, затем основной этап. Врач подтверждает, что сердце остановилось.</p></li>
-      <li class="step"><span class="step__num">5</span><h3>Прощание</h3><p>Время побыть рядом. Затем, если нужно, бережно забираем питомца на кремацию.</p></li>
+      <li class="step"><span class="step__num">5</span><h3>Прощание</h3><p>Время побыть рядом. Затем, если нужно, забираем питомца на кремацию.</p></li>
     </ol>
+    {{cta:Хотите обсудить ситуацию с врачом? Оставьте заявку — перезвоним и ответим на вопросы.}}
   </div>
 </section>
 
@@ -82,11 +84,13 @@
         <span class="card__ico">{{i:cat}}</span>
         <h3>Кошки и коты</h3>
         <p>Кошки тяжело переносят дорогу и чужие запахи, поэтому дома им заметно спокойнее. Врач работает тихо и не торопит: можно держать питомца на руках или оставить его на любимом месте.</p>
+        <a class="link-arrow" href="usyplenie-koshek.html">Усыпление кошки на дому{{i:arrow-right}}</a>
       </article>
       <article class="card" id="sobaki">
         <span class="card__ico">{{i:dog}}</span>
         <h3>Собаки</h3>
         <p>Пожилую или крупную собаку бывает трудно довезти до клиники. Врач приедет сам. Если собака тревожится при чужих, предупредите оператора — врач учтёт это при подготовке.</p>
+        <a class="link-arrow" href="usyplenie-sobak.html">Усыпление собаки на дому{{i:arrow-right}}</a>
       </article>
       <article class="card" id="gryzuny">
         <span class="card__ico">{{i:rodent}}</span>
@@ -127,7 +131,7 @@
 <section class="section" id="voprosy">
   <div class="container">
     <div class="section-head"><div class="section-head__text"><h2>Вопросы об усыплении</h2></div><a class="link-arrow" href="faq.html">Все вопросы{{i:arrow-right}}</a></div>
-    {{part:faq-usyplenie}}
+    {{faq:vkljuchaet,kogda,osmotr,bol,ryadom,dlitsya,podgotovka,cena}}
   </div>
 </section>
 
