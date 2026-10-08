@@ -53,17 +53,19 @@
   function setConsent(v) { try { localStorage.setItem("ms-consent", v); } catch (e) {} }
 
   function initAnalytics() {
-    if (hasAnalytics) {
+    // Уведомление показывается при первом визите, пока посетитель не сделает выбор.
+    // Счётчики загружаются только после «Принять» и только если их ID заданы.
+    {
       var c = getConsent();
       var banner = $("#cookie");
-      if (c === "yes") loadAnalytics();
-      else if (c !== "no" && banner) {
+      if (c === "yes" && hasAnalytics) loadAnalytics();
+      else if (c !== "yes" && c !== "no" && banner) {
         banner.hidden = false;
         $$("[data-consent]", banner).forEach(function (b) {
           b.addEventListener("click", function () {
             var v = b.getAttribute("data-consent");
             setConsent(v); banner.hidden = true;
-            if (v === "yes") loadAnalytics();
+            if (v === "yes" && hasAnalytics) loadAnalytics();
           });
         });
       }
