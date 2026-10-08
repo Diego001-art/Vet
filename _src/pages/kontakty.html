@@ -1,0 +1,73 @@
+{"title": "Контакты — Мягкий Свет", "description": "Как связаться с ветеринарной службой «Мягкий Свет»: телефон, электронная почта, режим работы и форма обратного звонка.", "nav": "kontakty"}
+<section class="page-hero">
+  <div class="container">
+    <ol class="crumbs"><li><a href="index.html">Главная</a></li><li>Контакты</li></ol>
+    <div class="page-hero__grid">
+      <div class="page-hero__text">
+        <span class="eyebrow">Связь со службой</span>
+        <h1>Контакты</h1>
+        <p class="lead">Позвоните, если нужно быстро. Напишите или оставьте заявку, если удобнее, чтобы перезвонили мы.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container grid grid-3">
+    <div class="card">
+      <span class="card__ico">{{i:phone}}</span>
+      <h2 style="font-size:1.2rem">Телефон</h2>
+      <p style="font-size:1.25rem;font-weight:700;color:var(--heading)">{{part:phone}}</p>
+      <p>{{part:hours}}</p>
+    </div>
+    <div class="card">
+      <span class="card__ico">{{i:mail}}</span>
+      <h2 style="font-size:1.2rem">Электронная почта</h2>
+      <p style="font-size:1.05rem;font-weight:600">{{part:email}}</p>
+      <p>Для вопросов, которые не требуют срочного ответа, и для документов.</p>
+    </div>
+    <div class="card">
+      <span class="card__ico">{{i:map}}</span>
+      <h2 style="font-size:1.2rem">Территория выезда</h2>
+      <p style="font-size:1.05rem;font-weight:600;color:var(--heading)">{{part:city}} {{part:region}}</p>
+      <p data-site-block="address" hidden>Адрес: <span data-site="address"></span></p>
+      <a class="link-arrow" href="zona.html">Зоны и доплаты{{i:arrow-right}}</a>
+    </div>
+  </div>
+  <div class="container" data-site-block="messengers" hidden style="margin-top:20px">
+    <div class="panel"><h3>Мессенджеры</h3><div class="chip-row" data-site-list="messengers"></div></div>
+  </div>
+</section>
+
+<section class="section section--tint" id="chto-soobshchit">
+  <div class="container split">
+    <div class="split__text">
+      <span class="eyebrow">Чтобы ответить быстрее</span>
+      <h2>Что удобно сообщить сразу</h2>
+      <p class="muted">Если трудно говорить, не беспокойтесь о подробностях — оператор сам задаст нужные вопросы.</p>
+      <ul class="check-list">
+        <li>Вид, возраст и примерный вес питомца</li>
+        <li>Адрес или район</li>
+        <li>Что нужно: консультация, визит врача или вывоз и кремация</li>
+        <li>Удобное время визита</li>
+      </ul>
+    </div>
+    {{part:form-contacts}}
+  </div>
+</section>
+
+<section class="section" id="voprosy">
+  <div class="container">
+    <div class="section-head"><div class="section-head__text"><h2>Вопросы о связи</h2></div></div>
+    <div class="faq">
+      <div class="faq__col">
+        <details class="faq-item"><summary>Можно ли сначала просто посоветоваться?{{part:chev}}</summary><div class="faq-item__body"><p>Да. Консультация по телефону ни к чему не обязывает. Объясним, какие есть варианты и как проходит визит.</p></div></details>
+        <details class="faq-item"><summary>Как быстро вы перезвоните после заявки?{{part:chev}}</summary><div class="faq-item__body"><p>Стараемся перезвонить как можно скорее. Если ситуация срочная, лучше позвонить самим.</p></div></details>
+      </div>
+      <div class="faq__col">
+        <details class="faq-item"><summary>Нужно ли регистрироваться на сайте?{{part:chev}}</summary><div class="faq-item__body"><p>Нет. Для заявки достаточно номера телефона, а калькулятор работает вообще без контактов.</p></div></details>
+        <details class="faq-item"><summary>Как вы используете мой номер телефона?{{part:chev}}</summary><div class="faq-item__body"><p>Только чтобы связаться с вами по заявке. Подробнее — в <a href="privacy.html">политике конфиденциальности</a>.</p></div></details>
+      </div>
+    </div>
+  </div>
+</section>
