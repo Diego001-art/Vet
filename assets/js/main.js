@@ -213,8 +213,8 @@
         '<svg viewBox="0 0 400 310" role="img" aria-label="Схема зон выезда: от центра города к пригородам">' +
         '<g stroke="var(--line)" stroke-width="2" fill="none" opacity="0.9"><path d="M20 230 C 120 190, 160 170, 200 155 S 320 90, 390 60"/><path d="M60 30 C 120 90, 170 130, 200 155 S 260 250, 300 300"/><path d="M0 150 H400"/></g>' +
         rings + labels +
-        '<g transform="translate(200 155)"><circle r="16" style="fill:var(--surface)"/><path d="M0 9s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" style="fill:var(--primary)"/><circle cy="-2" r="2.6" style="fill:var(--surface)"/></g>' +
-        '<text x="200" y="196" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--heading)">' + esc(C.city || "Город") + "</text>" +
+        '<g transform="translate(200 145)"><circle r="15" style="fill:var(--surface)"/><path d="M0 9s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" style="fill:var(--primary)"/><circle cy="-2" r="2.6" style="fill:var(--surface)"/></g>' +
+        '<text x="200" y="177" text-anchor="middle" font-size="11.5" font-weight="700" style="fill:var(--heading);paint-order:stroke;stroke:var(--surface);stroke-width:3px">' + esc(C.city || "Город") + "</text>" +
         "</svg>";
     });
   }
@@ -255,7 +255,7 @@
       }).join("") + "</div>";
       var allowed = C.species[s.species].weights;
       if (allowed.length > 1) {
-        body += '<div class="calc__group"><span class="calc__group-title">Примерный вес</span><div class="options options--sm" role="radiogroup" aria-label="Вес">' + allowed.map(function (wid) {
+        body += '<div class="calc__group"><span class="calc__group-title">Примерный вес</span><div class="options options--xs" role="radiogroup" aria-label="Вес">' + allowed.map(function (wid) {
           var w = C.weights.filter(function (x) { return x.id === wid; })[0];
           return self.option("radio", "weight", wid, s.weight === wid, "", w.label, "", true);
         }).join("") + "</div></div>";
