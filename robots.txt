@@ -1,5 +1,6 @@
+# Индексация открыта для поисковых и AI-систем
 User-agent: *
+Allow: /
 Disallow: /404.html
 
-# При переезде на свой домен замените адрес
 Sitemap: https://diego001-art.github.io/Vet/sitemap.xml
