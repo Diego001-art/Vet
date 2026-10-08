@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "_src"
 OUT = ROOT / "site"
-SITE_URL = "https://diego001-art.github.io/vet/"  # адрес сайта; поменяйте, если подключите свой домен
+SITE_URL = "https://diego001-art.github.io/Vet/"  # адрес сайта; поменяйте, если подключите свой домен
 VER = time.strftime("%Y%m%d%H%M")  # версия для сброса кеша браузера
 
 BRAND = "Мягкий Свет"

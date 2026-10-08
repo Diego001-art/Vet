@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /404.html
 
 # При переезде на свой домен замените адрес
-Sitemap: https://diego001-art.github.io/vet/sitemap.xml
+Sitemap: https://diego001-art.github.io/Vet/sitemap.xml
