@@ -106,6 +106,8 @@ def dval(key):
         return html.escape(D["visitDuration"]) if D["visitDuration"] else tok("DURATION")
     if key == "address":
         return html.escape(address_text()) if address_text() else tok("ADDRESS")
+    if key == "site":
+        return f'<a href="{SITE_URL}">{SITE_URL}</a>'
     if key == "messengers":
         return messenger_links() or tok("WHATSAPP / TELEGRAM")
     if key == "legal":
@@ -263,7 +265,7 @@ def header(active):
 FOOTER_COLS = [
     ("Услуги", [("Усыпление на дому", "usyplenie.html"), ("Усыпление кошек", "usyplenie-koshek.html"), ("Усыпление собак", "usyplenie-sobak.html"), ("Кремация животных", "kremaciya.html"), ("Вывоз тела", "vyvoz.html"), ("Урны для праха", "kremaciya.html#urny")]),
     ("Служба", [("О службе", "o-nas.html"), ("Врачи", "o-nas.html#vrachi"), ("Цены", "ceny.html"), ("Калькулятор", "ceny.html#kalkulyator"), ("Зона выезда", "zona.html"), ("Отзывы", "otzyvy.html")]),
-    ("Информация", [("Полезное", "stati.html"), ("Вопросы и ответы", "faq.html"), ("Контакты", "kontakty.html"), ("Конфиденциальность", "privacy.html")]),
+    ("Информация", [("Полезное", "stati.html"), ("Вопросы и ответы", "faq.html"), ("Контакты", "kontakty.html"), ("Обработка данных", "privacy.html"), ("Согласие на обработку", "soglasie.html")]),
 ]
 
 
@@ -341,7 +343,7 @@ def form_fields(prefix, topic_default="Консультация", title="Ост�
       </div>
       <input type="hidden" name="details" value="">
       <p class="form-details" hidden></p>
-      <label class="consent"><input type="checkbox" name="consent" id="{prefix}-consent" value="yes"><span>Согласен(на) на обработку персональных данных по <a href="privacy.html">политике конфиденциальности</a>.</span></label>
+      <label class="consent"><input type="checkbox" name="consent" id="{prefix}-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a> и подтверждаю, что ознакомлен(а) с <a href="privacy.html" target="_blank">политикой обработки данных</a>.</span></label>
       <button class="btn btn--primary btn--block" type="submit">{icon("send")}Отправить заявку</button>
       <div class="form-status" role="status" hidden></div>
     </form>'''
