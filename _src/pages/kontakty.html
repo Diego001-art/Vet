@@ -16,18 +16,18 @@
 <section class="section section--tight" id="nap">
   <div class="container">
     <div class="nap">
-      <div class="nap__item">
+<!--if:phone-->      <div class="nap__item">
         <span class="card__ico">{{i:phone}}</span>
         <div><h2 class="h-card">Телефон</h2><p class="nap__value">{{d:phone}}</p><p class="muted">{{d:hours}}</p></div>
-      </div>
-      <div class="nap__item">
+      </div><!--/if:phone-->
+<!--if:messengers-->      <div class="nap__item">
         <span class="card__ico">{{i:whatsapp}}</span>
         <div><h2 class="h-card">Мессенджеры</h2><div class="nap__value">{{d:messengers}}</div><p class="muted">Ответим в рабочее время.</p></div>
-      </div>
-      <div class="nap__item">
+      </div><!--/if:messengers-->
+<!--if:email-->      <div class="nap__item">
         <span class="card__ico">{{i:mail}}</span>
         <div><h2 class="h-card">Электронная почта</h2><p class="nap__value">{{d:email}}</p><p class="muted">Для вопросов, которые не требуют срочного ответа, и для документов.</p></div>
-      </div>
+      </div><!--/if:email-->
       <div class="nap__item">
         <span class="card__ico">{{i:map}}</span>
         <div><h2 class="h-card">Где работаем</h2><p class="nap__value">{{d:area}}</p><p class="muted">Адрес: {{d:address}}</p><a class="link-arrow" href="zona.html">Зона выезда и доплаты{{i:arrow-right}}</a></div>

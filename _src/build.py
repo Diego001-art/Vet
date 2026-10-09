@@ -52,7 +52,19 @@ NBSP = " "
 # --------------------------------------------------------------------------
 # Данные и метки-заглушки
 # --------------------------------------------------------------------------
+HIDE_EMPTY = bool(D.get("hideEmpty"))
+FORCE_TOKENS = [False]  # юридические страницы: метки видны всегда, их обязан заполнить владелец
+LEGAL_PAGES = {"privacy.html", "soglasie.html"}
+
+
+def hide():
+    """Режим витрины: незаполненные данные не выводятся (hideEmpty в site.json)."""
+    return HIDE_EMPTY and not FORCE_TOKENS[0]
+
+
 def tok(name):
+    if hide():
+        return ""
     return f'<span class="tk" title="Данные не заполнены: укажите в _src/site.json">[ADD REAL {name}]</span>'
 
 
@@ -89,8 +101,12 @@ def legal_text():
 def dval(key):
     """HTML-значение данных компании или метка."""
     if key == "phone":
+        if not PHONE_HREF and hide():
+            return '<a href="kontakty.html">Оставить заявку</a>'
         return f'<a href="tel:{PHONE_HREF}" class="nowrap">{html.escape(D["phone"])}</a>' if PHONE_HREF else tok("PHONE")
     if key == "phone-text":
+        if not PHONE_HREF and hide():
+            return "Оставить заявку"
         return html.escape(D["phone"]) if PHONE_HREF else tok("PHONE")
     if key == "email":
         return f'<a href="mailto:{html.escape(D["email"])}">{html.escape(D["email"])}</a>' if D["email"] else tok("EMAIL")
@@ -164,7 +180,7 @@ NAV = [
               ("Перед визитом", [("info", "Когда обсуждают эвтаназию", "usyplenie.html#kogda"), ("steth", "Как проходит визит врача", "usyplenie.html#vizit"), ("home", "Как подготовиться", "usyplenie.html#podgotovka"), ("book", "Памятка: подготовка к визиту", "stati-podgotovka.html")])],
      "promo": ("Стоимость усыпления", "Цена зависит от вида и веса питомца. Посмотрите прайс или соберите расчёт в калькуляторе.", [("ceny.html#prajs", "Смотреть цены"), ("ceny.html#kalkulyator", "Калькулятор")])},
     {"id": "kremaciya", "label": "Кремация", "href": "kremaciya.html",
-     "cols": [("Форматы", [("urn", "Индивидуальная кремация", "kremaciya.html#individualnaya"), ("flame", "Общая кремация", "kremaciya.html#obshchaya"), ("doc", "Сравнение форматов", "kremaciya.html#sravnenie")]),
+     "cols": [("Форматы", [("urn", "Индивидуальная кремация", "kremaciya.html#individualnaya"), ("flame", "Общая кремация", "kremaciya.html#obshchaya"), ("doc", "Сравнение форматов", "kremaciya.html#sravnenie"), ("cat", "Кремация кошки", "kremaciya-koshek.html"), ("dog", "Кремация собаки", "kremaciya-sobak.html")]),
               ("Сопутствующие услуги", [("truck", "Вывоз тела животного", "vyvoz.html"), ("urn", "Урны для праха", "kremaciya.html#urny"), ("route", "Доставка урны", "kremaciya.html#urny"), ("camera", "Фото- и видеоотчёт", "kremaciya.html#otchet")])],
      "promo": ("Питомец умер дома?", "Что сделать в первые часы и как организовать вывоз на кремацию.", [("vyvoz.html", "Вывоз тела"), ("stati-pitomec-umer.html", "Памятка")])},
     {"id": "ceny", "label": "Цены", "href": "ceny.html",
@@ -182,6 +198,12 @@ NAV = [
     {"id": "otzyvy", "label": "Отзывы", "href": "otzyvy.html"},
     {"id": "kontakty", "label": "Контакты", "href": "kontakty.html"},
 ]
+
+
+if HIDE_EMPTY:
+    for _n in NAV:
+        if "cols" in _n:
+            _n["cols"] = [(t, [x for x in links if "#vrachi" not in x[2]]) for t, links in _n["cols"]]
 
 
 def desktop_nav(active):
@@ -263,8 +285,8 @@ def header(active):
 
 
 FOOTER_COLS = [
-    ("Услуги", [("Усыпление на дому", "usyplenie.html"), ("Усыпление кошек", "usyplenie-koshek.html"), ("Усыпление собак", "usyplenie-sobak.html"), ("Кремация животных", "kremaciya.html"), ("Вывоз тела", "vyvoz.html"), ("Урны для праха", "kremaciya.html#urny")]),
-    ("Служба", [("О службе", "o-nas.html"), ("Врачи", "o-nas.html#vrachi"), ("Цены", "ceny.html"), ("Калькулятор", "ceny.html#kalkulyator"), ("Зона выезда", "zona.html"), ("Отзывы", "otzyvy.html")]),
+    ("Услуги", [("Усыпление на дому", "usyplenie.html"), ("Усыпление кошек", "usyplenie-koshek.html"), ("Усыпление собак", "usyplenie-sobak.html"), ("Кремация животных", "kremaciya.html"), ("Кремация кошек", "kremaciya-koshek.html"), ("Кремация собак", "kremaciya-sobak.html"), ("Вывоз тела", "vyvoz.html"), ("Урны для праха", "kremaciya.html#urny")]),
+    ("Служба", [("О службе", "o-nas.html")] + ([] if HIDE_EMPTY else [("Врачи", "o-nas.html#vrachi")]) + [("Цены", "ceny.html"), ("Калькулятор", "ceny.html#kalkulyator"), ("Зона выезда", "zona.html"), ("Отзывы", "otzyvy.html")]),
     ("Информация", [("Полезное", "stati.html"), ("Вопросы и ответы", "faq.html"), ("Контакты", "kontakty.html"), ("Обработка данных", "privacy.html"), ("Согласие на обработку", "soglasie.html")]),
 ]
 
@@ -302,7 +324,7 @@ def footer():
       <div class="footer__contacts">
         <span class="footer__phone">{dval("phone")}</span>
         <span>{dval("hours")}</span>
-        <span>{dval("email")}</span>
+        {f'<span>{dval("email")}</span>' if D["email"] or not hide() else ""}
         <span>{icon("pin")} {dval("area")}</span>
         <div class="chip-row">{messenger_links()}</div>
       </div>
@@ -312,7 +334,7 @@ def footer():
       <span><a href="privacy.html">Политика конфиденциальности</a></span>
       <span class="footer__motto">Рядом, когда это важнее всего</span>
     </div>
-    <p class="footer__legal">{dval("legal")}. Информация на сайте носит справочный характер и не является публичной офертой. Стоимость услуг подтверждается до начала их оказания.</p>
+    <p class="footer__legal">{(dval("legal") + ". ") if legal_text() or not hide() else ""}Информация на сайте носит справочный характер и не является публичной офертой. Стоимость услуг подтверждается до начала их оказания.</p>
   </div>
 </footer>
 {fab}
@@ -542,7 +564,8 @@ def zone_block(heading="h2"):
 def facts_block(heading="h2"):
     """Блок «Коротко о службе»: ясные факты для людей и AI-систем."""
     contacts = []
-    contacts.append(f"телефон {dval('phone')}")
+    if PHONE_HREF or not hide():
+        contacts.append(f"телефон {dval('phone')}")
     if WA_URL:
         contacts.append(f'<a href="{WA_URL}" data-track="whatsapp_click" target="_blank" rel="noopener">WhatsApp</a>')
     if TG_URL:
@@ -558,6 +581,8 @@ def facts_block(heading="h2"):
         ("Опыт", dval("experience")),
         ("Как связаться", ", ".join(contacts) + "."),
     ]
+    if not D["experience"] and hide():
+        rows = [r for r in rows if r[0] != "Опыт"]
     dl = "".join(f"<div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in rows)
     return f'''<div class="facts">
       <{heading} class="facts__title">Коротко о службе</{heading}>
@@ -583,6 +608,8 @@ def review_links():
     names = {"yandex": "Яндекс Картах", "google": "Google Картах", "twogis": "2ГИС"}
     links = [f'<a class="btn" href="{html.escape(u)}" target="_blank" rel="noopener">{icon("star")}Отзыв на {names[k]}</a>' for k, u in D["reviewLinks"].items() if u]
     if not links:
+        if hide():
+            return ""
         return f'<p class="muted small">Ссылки на карточки в Яндекс Картах, Google Картах и 2ГИС: {tok("REVIEW LINKS")}</p>'
     return '<div class="btn-row">' + "".join(links) + "</div>"
 
@@ -597,7 +624,9 @@ FAQ = {
     "osmotr": ("Может ли врач сначала просто осмотреть питомца?", "<p>Да. Визит начинается с осмотра и разговора. Если врач увидит, что питомцу можно помочь лечением или обезболиванием, он скажет об этом. Процедуру проводят только при медицинских показаниях и только с вашего согласия.</p>"),
     "bol": ("Почувствует ли питомец боль?", "<p>Перед основным этапом животному вводят седативный препарат, и оно засыпает. Следующий этап врач начинает, только когда убедится, что питомец в глубоком сне.</p>"),
     "ryadom": ("Можно ли быть рядом во время процедуры?", "<p>Да. Многие владельцы остаются рядом, гладят питомца и говорят с ним. Если вам слишком тяжело, можно выйти в другую комнату. Время попрощаться будет и до процедуры, и после.</p>"),
-    "dlitsya": ("Сколько длится визит врача?", f"<p>Обычно визит занимает {dval('duration')}. Мы не торопимся: время нужно на осмотр, разговор, ваши вопросы и прощание.</p>"),
+    "dlitsya": ("Сколько длится визит врача?", f"<p>Обычно визит занимает {dval('duration')}. Мы не торопимся: время нужно на осмотр, разговор, ваши вопросы и прощание.</p>"
+                if D["visitDuration"] or not HIDE_EMPTY else
+                "<p>Длительность зависит от ситуации — ориентир назовём при звонке. Мы не торопимся: время нужно на осмотр, разговор, ваши вопросы и прощание.</p>"),
     "noch": ("Можно ли вызвать врача срочно, в том числе ночью?", f"<p>Часы работы: {dval('hours')}. Время приезда зависит от адреса и загрузки врачей — оператор назовёт его при звонке.</p>"),
     "kvartira": ("Врач приезжает в квартиру и в частный дом?", "<p>Да. Врач приезжает по адресу, который вы назовёте: в квартиру или частный дом в пределах зоны выезда.</p>"),
     "rayon": ("Выезжаете ли вы в мой район?", f"<p>Зона выезда: {dval('area')}. Назовите адрес — оператор подтвердит выезд и доплату, если она нужна. Подробнее — на странице <a href=\"zona.html\">«Зона выезда»</a>.</p>"),
@@ -742,6 +771,8 @@ PARTS = {
     "prices": lambda: prices_panel(),
     "prices-cremation": lambda: prices_panel(title="Цена кремации зависит от веса", sub="Общая и индивидуальная кремация по видам питомцев. Урна и доставка — отдельно.", mode="cremation"),
     "prices-cat": lambda: prices_panel(title="Цены для кошек", sub="Усыпление на дому и кремация в зависимости от веса.", group="cat", id_="ceny-koshki"),
+    "prices-cremation-cat": lambda: prices_panel(title="Цены на кремацию кошки", sub="Общая и индивидуальная кремация в зависимости от веса. Вывоз, урна и доставка — отдельно.", mode="cremation", group="cat", id_="ceny-kremaciya-koshki"),
+    "prices-cremation-dog": lambda: prices_panel(title="Цены на кремацию собаки", sub="Общая и индивидуальная кремация в зависимости от веса собаки. Вывоз, урна и доставка — отдельно.", mode="cremation", group="dog", id_="ceny-kremaciya-sobaki"),
     "prices-dog": lambda: prices_panel(title="Цены для собак", sub="Усыпление на дому и кремация в зависимости от веса собаки.", group="dog", id_="ceny-sobaki"),
     "team": team_cards,
     "articles3": lambda: article_cards(),
@@ -761,7 +792,19 @@ PARTS = {
 }
 
 
+COND = {
+    "team": not HIDE_EMPTY,       # карточек врачей нет в данных — показываем заглушки только в режиме заполнения
+    "reviews": not HIDE_EMPTY,    # то же для отзывов
+    "phone": bool(PHONE_HREF) or not HIDE_EMPTY,
+    "messengers": bool(WA_URL or TG_URL) or not HIDE_EMPTY,
+    "email": bool(D["email"]) or not HIDE_EMPTY,
+    "experience": bool(D["experience"]) or not HIDE_EMPTY,
+    "legal": bool(legal_text()) or not HIDE_EMPTY,
+}
+
+
 def render(text, meta, ctx):
+    text = re.sub(r"<!--if:([a-z]+)-->(.*?)<!--/if:\1-->", lambda m: m.group(2) if COND[m.group(1)] else "", text, flags=re.S)
     text = re.sub(r"\[ADD REAL ([A-Z ]+)\]", lambda m: tok(m.group(1)), text)
     text = re.sub(r"\{\{i:([a-z0-9-]+)\}\}", lambda m: icon(m.group(1)), text)
     text = re.sub(r"\{\{d:([a-z-]+)\}\}", lambda m: dval(m.group(1)), text)
@@ -852,19 +895,22 @@ def write_seo_files(pages):
     (OUT / "robots.txt").write_text(
         "# Индексация открыта для поисковых и AI-систем\nUser-agent: *\nAllow: /\nDisallow: /404.html\n\n"
         f"Sitemap: {SITE_URL}sitemap.xml\n", encoding="utf-8")
-    ph = lambda v, name: v if v else f"[ADD REAL {name}]"
+    ph = lambda v, name: v if v else ("" if HIDE_EMPTY else f"[ADD REAL {name}]")
     lines = [f"# {BRAND}", "", f"> {TAGLINE}. Выездная ветеринарная служба: гуманное усыпление животных на дому по медицинским показаниям, общая и индивидуальная кремация, вывоз тела, урны и доставка праха.", "",
              "## Факты", f"- Где работаем: {ph(D['serviceArea'], 'SERVICE AREA')}", f"- Город: {ph(D['city'], 'CITY')}", f"- Часы работы: {ph(D['hours'], 'HOURS')}",
-             f"- Телефон: {ph(D['phone'], 'PHONE')}", f"- E-mail: {ph(D['email'], 'EMAIL')}", f"- WhatsApp: {WA_URL or '[ADD REAL WHATSAPP]'}", f"- Telegram: {TG_URL or '[ADD REAL TELEGRAM]'}",
+             f"- Телефон: {ph(D['phone'], 'PHONE')}", f"- E-mail: {ph(D['email'], 'EMAIL')}", f"- WhatsApp: {WA_URL or ('' if HIDE_EMPTY else '[ADD REAL WHATSAPP]')}", f"- Telegram: {TG_URL or ('' if HIDE_EMPTY else '[ADD REAL TELEGRAM]')}",
              f"- Цены: усыпление на дому — {('от ' + str(min_price('euth')) + ' ₽') if min_price('euth') else '[ADD REAL PRICE]'}; общая кремация — {('от ' + str(min_price('common')) + ' ₽') if min_price('common') else '[ADD REAL PRICE]'}; индивидуальная кремация — {('от ' + str(min_price('individual')) + ' ₽') if min_price('individual') else '[ADD REAL PRICE]'}",
              "- Животные: кошки, собаки, грызуны, кролики, хорьки, птицы, рептилии", "- Язык: русский", "",
              "## Основные страницы",
              f"- [Усыпление животных на дому]({SITE_URL}usyplenie.html): показания, порядок визита, подготовка, цены",
              f"- [Усыпление кошки на дому]({SITE_URL}usyplenie-koshek.html)", f"- [Усыпление собаки на дому]({SITE_URL}usyplenie-sobak.html)",
              f"- [Кремация животных]({SITE_URL}kremaciya.html): общая и индивидуальная, урны, фото- и видеоотчёт",
+             f"- [Кремация кошки]({SITE_URL}kremaciya-koshek.html)", f"- [Кремация собаки]({SITE_URL}kremaciya-sobak.html)",
              f"- [Вывоз тела животного]({SITE_URL}vyvoz.html)", f"- [Цены и калькулятор]({SITE_URL}ceny.html)", f"- [Зона выезда]({SITE_URL}zona.html)",
              f"- [О службе]({SITE_URL}o-nas.html)", f"- [Вопросы и ответы]({SITE_URL}faq.html)", f"- [Контакты]({SITE_URL}kontakty.html)", "",
              "## Памятки владельцам"] + [f"- [{t}]({SITE_URL}{h})" for h, _, _, _, t, _ in ARTICLES]
+    if HIDE_EMPTY:
+        lines = [l for l in lines if not re.match(r"^- [^:]+: ?$", l)]
     (OUT / "llms.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -876,7 +922,10 @@ def main():
         first, _, body = raw.partition("\n")
         meta = json.loads(first)
         ctx = Ctx()
-        out_html = page(meta, render(body, meta, ctx), p.name, ctx)
+        FORCE_TOKENS[0] = p.name in LEGAL_PAGES
+        body_html = render(body, meta, ctx)
+        FORCE_TOKENS[0] = False
+        out_html = page(meta, body_html, p.name, ctx)
         if "{{" in out_html:
             raise SystemExit(f"Необработанный шорткод в {p.name}: " + re.search(r"\{\{[^}]*\}\}", out_html).group(0))
         (OUT / p.name).write_text(out_html, encoding="utf-8")

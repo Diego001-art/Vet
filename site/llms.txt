@@ -6,10 +6,6 @@
 - Где работаем: Весь Санкт-Петербург, выезд за КАД — с доплатой
 - Город: Санкт-Петербург
 - Часы работы: Ежедневно с 9:00 до 21:00
-- Телефон: [ADD REAL PHONE]
-- E-mail: [ADD REAL EMAIL]
-- WhatsApp: [ADD REAL WHATSAPP]
-- Telegram: [ADD REAL TELEGRAM]
 - Цены: усыпление на дому — от 1200 ₽; общая кремация — от 1100 ₽; индивидуальная кремация — от 3450 ₽
 - Животные: кошки, собаки, грызуны, кролики, хорьки, птицы, рептилии
 - Язык: русский
@@ -19,6 +15,8 @@
 - [Усыпление кошки на дому](https://diego001-art.github.io/Vet/usyplenie-koshek.html)
 - [Усыпление собаки на дому](https://diego001-art.github.io/Vet/usyplenie-sobak.html)
 - [Кремация животных](https://diego001-art.github.io/Vet/kremaciya.html): общая и индивидуальная, урны, фото- и видеоотчёт
+- [Кремация кошки](https://diego001-art.github.io/Vet/kremaciya-koshek.html)
+- [Кремация собаки](https://diego001-art.github.io/Vet/kremaciya-sobak.html)
 - [Вывоз тела животного](https://diego001-art.github.io/Vet/vyvoz.html)
 - [Цены и калькулятор](https://diego001-art.github.io/Vet/ceny.html)
 - [Зона выезда](https://diego001-art.github.io/Vet/zona.html)
