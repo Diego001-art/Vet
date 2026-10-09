@@ -77,33 +77,33 @@ window.SITE_CONFIG = {
       "label": "Усыпление на дому",
       "note": "Осмотр, седация, процедура",
       "prices": {
-        "w1": null,
-        "w2": null,
-        "w3": null,
-        "w4": null,
-        "w5": null
+        "w1": 1200,
+        "w2": 1600,
+        "w3": 1950,
+        "w4": 2650,
+        "w5": 3300
       }
     },
     "common": {
       "label": "Общая кремация",
       "note": "Без возврата праха",
       "prices": {
-        "w1": null,
-        "w2": null,
-        "w3": null,
-        "w4": null,
-        "w5": null
+        "w1": 1100,
+        "w2": 1850,
+        "w3": 2650,
+        "w4": 4000,
+        "w5": 5200
       }
     },
     "individual": {
       "label": "Индивидуальная кремация",
       "note": "С возвратом праха в урне",
       "prices": {
-        "w1": null,
-        "w2": null,
-        "w3": null,
-        "w4": null,
-        "w5": null
+        "w1": 3450,
+        "w2": 4050,
+        "w3": 4850,
+        "w4": 6200,
+        "w5": 7600
       }
     }
   },
@@ -111,44 +111,44 @@ window.SITE_CONFIG = {
     "pickup": {
       "label": "Вывоз тела на кремацию",
       "note": "Если питомец умер дома или в клинике",
-      "price": null
+      "price": 1550
     },
     "urn": {
       "label": "Урна для праха",
       "note": "Модель выбирается отдельно",
-      "price": null
+      "price": 750
     },
     "delivery": {
       "label": "Доставка урны с прахом",
       "note": "По вашему адресу",
-      "price": null
+      "price": 0
     },
     "report": {
       "label": "Фото- и видеоотчёт",
       "note": "Для индивидуальной кремации",
-      "price": null
+      "price": 1550
     }
   },
   "zones": [
     {
       "id": "z1",
       "label": "Город",
-      "note": "",
-      "price": null,
+      "note": "В пределах КАД",
+      "price": 0,
       "color": "#2866a0"
     },
     {
       "id": "z2",
       "label": "Пригород",
-      "note": "",
-      "price": null,
+      "note": "До 15 км за КАД",
+      "price": 1400,
       "color": "#6fb3dc"
     },
     {
       "id": "z3",
       "label": "Дальний выезд",
-      "note": "",
-      "price": null,
+      "note": "Дальше 15 км, Ленобласть",
+      "price": 2800,
       "color": "#e0a865"
     }
   ],
