@@ -154,9 +154,7 @@ window.SITE_CONFIG = {
   ],
   "formEndpoint": "",
   "analytics": {
-    "ga4": "",
-    "metrika": "",
-    "clarity": ""
+    "metrika": ""
   },
   "phone": "",
   "phoneHref": "",

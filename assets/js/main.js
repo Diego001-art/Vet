@@ -15,16 +15,14 @@
 
   /* ---------- 1. Аналитика: события и загрузка счётчиков после согласия ---------- */
   var A = C.analytics || {};
-  var hasAnalytics = !!(A.ga4 || A.metrika || A.clarity);
+  var hasAnalytics = !!A.metrika; /* только Яндекс Метрика: данные хранятся в РФ (ч. 5 ст. 18 152-ФЗ) */
   window.dataLayer = window.dataLayer || [];
 
   function track(event, params) {
     params = params || {};
     params.page_path = location.pathname;
     window.dataLayer.push(Object.assign({ event: event }, params));
-    try { if (window.gtag) window.gtag("event", event, params); } catch (e) {}
     try { if (window.ym && A.metrika) window.ym(Number(A.metrika), "reachGoal", event, params); } catch (e) {}
-    try { if (window.clarity) window.clarity("event", event); } catch (e) {}
   }
   window.siteTrack = track;
 
@@ -32,21 +30,11 @@
     var s = document.createElement("script"); s.async = true; s.src = src; if (onload) s.onload = onload; document.head.appendChild(s);
   }
   function loadAnalytics() {
-    if (A.ga4) {
-      loadScript("https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(A.ga4));
-      window.gtag = function () { window.dataLayer.push(arguments); };
-      window.gtag("js", new Date());
-      window.gtag("config", A.ga4);
-    }
     if (A.metrika) {
       window.ym = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments); };
       window.ym.l = Date.now();
       loadScript("https://mc.yandex.ru/metrika/tag.js");
       window.ym(Number(A.metrika), "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: false });
-    }
-    if (A.clarity) {
-      window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
-      loadScript("https://www.clarity.ms/tag/" + encodeURIComponent(A.clarity));
     }
   }
   function getConsent() { try { return localStorage.getItem("ms-consent"); } catch (e) { return null; } }
@@ -70,6 +58,19 @@
         });
       }
     }
+    // «Настроить cookie» в подвале: сбрасывает выбор и снова показывает уведомление
+    $$("[data-cookie-reset]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var had = getConsent() === "yes";
+        try { localStorage.removeItem("ms-consent"); } catch (e) {}
+        if (had) { location.reload(); return; }
+        var banner = $("#cookie"); if (!banner) return;
+        banner.hidden = false;
+        $$("[data-consent]", banner).forEach(function (x) {
+          x.onclick = function () { var v = x.getAttribute("data-consent"); setConsent(v); banner.hidden = true; if (v === "yes" && hasAnalytics) loadAnalytics(); };
+        });
+      });
+    });
     // Клики по телефону и мессенджерам
     document.addEventListener("click", function (e) {
       var a = e.target.closest("a[href]");
@@ -367,6 +368,19 @@
       inp.addEventListener("focus", function () { if (!inp.value) inp.value = "+7 ("; });
       inp.addEventListener("blur", function () { if (inp.value.replace(/\D/g, "").length <= 1) inp.value = ""; });
     });
+    if (!C.formEndpoint) {
+      // Приём заявок не подключён: не даём вводить данные, которые никуда не уйдут
+      $$("form[data-form]").forEach(function (form) {
+        $$("input, select, textarea, button[type=submit]", form).forEach(function (el) { el.disabled = true; });
+        var note = document.createElement("p");
+        note.className = "form-off";
+        note.textContent = "Приём заявок через сайт скоро заработает. Сейчас форма отключена, данные не собираются.";
+        var title = $(".form-card__title", form);
+        if (title && title.nextElementSibling) title.parentNode.insertBefore(note, title.nextElementSibling.nextSibling);
+        else form.insertBefore(note, form.firstChild);
+      });
+      return;
+    }
     $$("form[data-form]").forEach(function (form) {
       form.addEventListener("submit", function (e) {
         e.preventDefault();

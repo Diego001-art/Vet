@@ -22,9 +22,9 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=20261021181043">
-<script src="assets/js/config.js?v=20261021181043" defer></script>
-<script src="assets/js/main.js?v=20261021181043" defer></script>
+<link rel="stylesheet" href="assets/css/style.css?v=20261021184111">
+<script src="assets/js/config.js?v=20261021184111" defer></script>
+<script src="assets/js/main.js?v=20261021184111" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["VeterinaryCare","LocalBusiness"],"@id":"https://diego001-art.github.io/Vet/#org","name":"Ветслужба СПб","url":"https://diego001-art.github.io/Vet/","logo":"https://diego001-art.github.io/Vet/assets/img/logo-512.png","image":"https://diego001-art.github.io/Vet/assets/img/og-image.png","description":"Выездная ветеринарная служба: гуманное усыпление животных на дому по медицинским показаниям, общая и индивидуальная кремация, вывоз тела, урны и доставка праха.","knowsLanguage":"ru","address":{"@type":"PostalAddress","addressCountry":"RU","addressLocality":"Санкт-Петербург"},"areaServed":{"@type":"City","name":"Санкт-Петербург"},"openingHours":["Mo-Su 09:00-21:00"]},{"@type":"WebSite","@id":"https://diego001-art.github.io/Vet/#website","url":"https://diego001-art.github.io/Vet/","name":"Ветслужба СПб","inLanguage":"ru-RU","publisher":{"@id":"https://diego001-art.github.io/Vet/#org"}},{"@type":"BreadcrumbList","@id":"https://diego001-art.github.io/Vet/otzyvy.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://diego001-art.github.io/Vet/"},{"@type":"ListItem","position":2,"name":"Отзывы","item":"https://diego001-art.github.io/Vet/otzyvy.html"}]},{"@type":"WebPage","@id":"https://diego001-art.github.io/Vet/otzyvy.html#webpage","url":"https://diego001-art.github.io/Vet/otzyvy.html","name":"Отзывы — Ветслужба СПб","description":"Реальные отзывы владельцев о службе «Ветслужба СПб» — только с согласия авторов. Оставьте отзыв на сайте, в Яндекс Картах, Google Картах или 2ГИС.","isPartOf":{"@id":"https://diego001-art.github.io/Vet/#website"},"about":{"@id":"https://diego001-art.github.io/Vet/#org"},"inLanguage":"ru-RU","dateModified":"2026-10-21","breadcrumb":{"@id":"https://diego001-art.github.io/Vet/otzyvy.html#breadcrumb"}}]}</script>
 </head>
 <body>
@@ -87,29 +87,13 @@
     <div class="split__text">
       <span class="eyebrow">Написать нам</span>
       <h2>Расскажите, как всё прошло</h2>
-      <p class="muted">Можно написать отзыв, задать вопрос после визита или рассказать, что нам стоит изменить. Если вы разрешаете публикацию, отметьте это в комментарии.</p>
-      <ul class="check-list">
-        <li>Что было важно для вас в этот день</li>
-        <li>Что помогло, а что можно было сделать лучше</li>
-        <li>Можно ли опубликовать отзыв и под каким именем</li>
-      </ul>
+      <p class="muted">Если хотите поделиться впечатлениями или задать вопрос после визита, оставьте заявку — мы перезвоним.</p>
     </div>
-    <form class="form-card" data-form="feedback" novalidate>
-      <h3 class="form-card__title">Оставить отзыв или вопрос</h3>
-      <p>Напишите, что было хорошо и что стоит улучшить. Мы прочитаем каждое сообщение.</p>
-      <div class="form-grid">
-        <div class="field"><label for="fb-name">Имя</label><input class="input" id="fb-name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться"><span class="field__error"></span></div>
-        <div class="field"><label for="fb-phone">Телефон или WhatsApp <span class="req">*</span></label><input class="input" id="fb-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required><span class="field__error" aria-live="polite"></span></div>
-        <div class="field"><label for="fb-topic">Услуга</label><select class="select" id="fb-topic" name="topic"><option>Консультация</option><option>Усыпление на дому</option><option>Вывоз тела</option><option>Индивидуальная кремация</option><option>Общая кремация</option><option>Узнать цену</option><option selected>Другое</option></select></div>
-        <div class="field"><label for="fb-time">Удобное время</label><select class="select" id="fb-time" name="time"><option>Как можно скорее</option><option>Сегодня</option><option>Завтра</option><option>Другое время — обсудим по телефону</option></select></div>
-        <div class="field field--full"><label for="fb-location">Район или адрес</label><input class="input" id="fb-location" name="location" type="text" autocomplete="street-address" placeholder="Например: район и улица"></div>
-      </div>
-      <input type="hidden" name="details" value="">
-      <p class="form-details" hidden></p>
-      <label class="consent"><input type="checkbox" name="consent" id="fb-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a> и подтверждаю, что ознакомлен(а) с <a href="privacy.html" target="_blank">политикой обработки данных</a>.</span></label>
-      <button class="btn btn--primary btn--block" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg>Отправить заявку</button>
-      <div class="form-status" role="status" hidden></div>
-    </form>
+    <div class="panel panel--tint">
+      <h3><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Публикация отзывов</h3>
+      <p class="muted">Мы публикуем отзыв, только если вы отдельно разрешили это письменно и указали, под каким именем его разместить. Без такого разрешения ваши слова и имя на сайте не появятся.</p>
+      <button class="btn btn--primary" type="button" data-open="callback" data-topic="Другое"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Оставить заявку</button>
+    </div>
   </div>
 </section>
 
@@ -132,7 +116,7 @@
     </div>
     <div class="footer__bottom">
       <span>© <span data-year>2026</span> Ветслужба СПб. Усыпление и кремация животных.</span>
-      <span><a href="privacy.html">Политика конфиденциальности</a></span>
+      <span><a href="privacy.html">Политика конфиденциальности</a> · <a href="soglasie.html">Согласие на обработку данных</a> · <button class="link-btn" type="button" data-cookie-reset>Настроить cookie</button></span>
       <span class="footer__motto">Рядом, когда это важнее всего</span>
     </div>
     <p class="footer__legal">Информация на сайте носит справочный характер и не является публичной офертой. Стоимость услуг подтверждается до начала их оказания.</p>
@@ -155,7 +139,8 @@
       </div>
       <input type="hidden" name="details" value="">
       <p class="form-details" hidden></p>
-      <label class="consent"><input type="checkbox" name="consent" id="cbm-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a> и подтверждаю, что ознакомлен(а) с <a href="privacy.html" target="_blank">политикой обработки данных</a>.</span></label>
+      <label class="consent"><input type="checkbox" name="consent" id="cbm-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a></span></label>
+      <p class="form-note">Как мы обращаемся с данными — в <a href="privacy.html" target="_blank">политике обработки персональных данных</a>.</p>
       <button class="btn btn--primary btn--block" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg>Отправить заявку</button>
       <div class="form-status" role="status" hidden></div>
     </form>
@@ -169,7 +154,7 @@
   </div>
 </dialog>
 <div class="cookie" id="cookie" hidden>
-  <p>Сайт запоминает ваш выбор в браузере и подключает аналитические cookie (Яндекс Метрика и другие) только после вашего согласия. Подробнее — в <a href="privacy.html">политике обработки данных</a>.</p>
+  <p>Если вы нажмёте «Принять», подключится Яндекс Метрика: она собирает cookie-идентификатор, IP-адрес и сведения о посещении страниц, чтобы мы видели статистику сайта. Данные хранятся в России. Ваш выбор сохраняется в браузере, изменить его можно по ссылке «Настроить cookie» внизу страницы. Подробнее — в <a href="privacy.html">политике обработки данных</a>.</p>
   <div class="btn-row"><button class="btn btn--primary btn--sm" type="button" data-consent="yes">Принять</button><button class="btn btn--sm" type="button" data-consent="no">Отказаться</button></div>
 </div>
 </body>

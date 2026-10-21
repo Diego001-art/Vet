@@ -22,9 +22,9 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=20261021181043">
-<script src="assets/js/config.js?v=20261021181043" defer></script>
-<script src="assets/js/main.js?v=20261021181043" defer></script>
+<link rel="stylesheet" href="assets/css/style.css?v=20261021184111">
+<script src="assets/js/config.js?v=20261021184111" defer></script>
+<script src="assets/js/main.js?v=20261021184111" defer></script>
 
 </head>
 <body>
@@ -89,7 +89,7 @@
     </div>
     <div class="footer__bottom">
       <span>© <span data-year>2026</span> Ветслужба СПб. Усыпление и кремация животных.</span>
-      <span><a href="privacy.html">Политика конфиденциальности</a></span>
+      <span><a href="privacy.html">Политика конфиденциальности</a> · <a href="soglasie.html">Согласие на обработку данных</a> · <button class="link-btn" type="button" data-cookie-reset>Настроить cookie</button></span>
       <span class="footer__motto">Рядом, когда это важнее всего</span>
     </div>
     <p class="footer__legal">Информация на сайте носит справочный характер и не является публичной офертой. Стоимость услуг подтверждается до начала их оказания.</p>
@@ -112,7 +112,8 @@
       </div>
       <input type="hidden" name="details" value="">
       <p class="form-details" hidden></p>
-      <label class="consent"><input type="checkbox" name="consent" id="cbm-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a> и подтверждаю, что ознакомлен(а) с <a href="privacy.html" target="_blank">политикой обработки данных</a>.</span></label>
+      <label class="consent"><input type="checkbox" name="consent" id="cbm-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a></span></label>
+      <p class="form-note">Как мы обращаемся с данными — в <a href="privacy.html" target="_blank">политике обработки персональных данных</a>.</p>
       <button class="btn btn--primary btn--block" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg>Отправить заявку</button>
       <div class="form-status" role="status" hidden></div>
     </form>
@@ -126,7 +127,7 @@
   </div>
 </dialog>
 <div class="cookie" id="cookie" hidden>
-  <p>Сайт запоминает ваш выбор в браузере и подключает аналитические cookie (Яндекс Метрика и другие) только после вашего согласия. Подробнее — в <a href="privacy.html">политике обработки данных</a>.</p>
+  <p>Если вы нажмёте «Принять», подключится Яндекс Метрика: она собирает cookie-идентификатор, IP-адрес и сведения о посещении страниц, чтобы мы видели статистику сайта. Данные хранятся в России. Ваш выбор сохраняется в браузере, изменить его можно по ссылке «Настроить cookie» внизу страницы. Подробнее — в <a href="privacy.html">политике обработки данных</a>.</p>
   <div class="btn-row"><button class="btn btn--primary btn--sm" type="button" data-consent="yes">Принять</button><button class="btn btn--sm" type="button" data-consent="no">Отказаться</button></div>
 </div>
 </body>
