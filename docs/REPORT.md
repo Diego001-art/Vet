@@ -1,4 +1,4 @@
-# Отчёт: SEO, GEO/AEO, UX и конверсия — «Мягкий Свет»
+# Отчёт: SEO, GEO/AEO, UX и конверсия — «Вет служба СПБ»
 
 Сайт: https://diego001-art.github.io/Vet/ · Репозиторий: https://github.com/Diego001-art/Vet
 
