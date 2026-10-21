@@ -45,8 +45,9 @@
       <h2 class="h-card">Индивидуальная кремация</h2>
       <p>Питомца кремируют отдельно от других животных. Прах передают вам в урне — её можно забрать самостоятельно или заказать доставку.</p>
       <ul class="check-list">
-        <li>Отдельная кремация</li>
-        <li>Прах в урне, которую вы выберете</li>
+        <li>Отдельная кремация — от 2 до 6 рабочих дней</li>
+        <li>Прах в урне: дерево, керамика или пластик</li>
+        <li>Можно присутствовать при кремации</li>
         <li>Фото- и видеоотчёт по желанию</li>
       </ul>
     </article>
@@ -73,8 +74,10 @@
         <tbody>
           <tr><th scope="row">Как проходит</th><td>Питомца кремируют отдельно</td><td>Вместе с другими животными</td></tr>
           <tr><th scope="row">Прах</th><td>Возвращается владельцу в урне</td><td>Не возвращается</td></tr>
+          <tr><th scope="row">Срок</th><td>2–6 рабочих дней</td><td>—</td></tr>
+          <tr><th scope="row">Присутствие при кремации</th><td>Можно, время согласуем заранее</td><td>—</td></tr>
           <tr><th scope="row">Фото- и видеоотчёт</th><td>Можно заказать</td><td>Не предусмотрен</td></tr>
-          <tr><th scope="row">Урна и доставка</th><td>Подбираем урну, доставка по желанию</td><td>Не нужны</td></tr>
+          <tr><th scope="row">Урна и доставка</th><td>Дерево, керамика или пластик; доставка по желанию</td><td>Не нужны</td></tr>
           <tr><th scope="row">Стоимость</th><td>{{price:individual}}</td><td>{{price:common}}</td></tr>
         </tbody>
       </table>
@@ -94,17 +97,24 @@
       </ul>
       <div class="btn-row"><button class="btn btn--primary" type="button" data-open="callback" data-topic="Вывоз тела">{{i:truck}}Заказать вывоз</button><a class="btn" href="vyvoz.html">{{i:arrow-right}}Подробнее о вывозе</a></div>
     </div>
-    <div class="ph ph--arch">{{i:photo}}<span>[ADD REAL PHOTO]<br>автомобиль службы или специалист</span></div>
+    <div class="panel panel--tint">
+      <h3>{{i:truck}} Как проходит вывоз</h3>
+      <ul class="check-list">
+        <li>Согласуем время приезда по телефону или в заявке</li>
+        <li>Специалист забирает питомца из дома или клиники</li>
+        <li>Формат кремации можно выбрать заранее или при оформлении</li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <section class="section section--tint" id="urny">
   <div class="container">
-    <div class="section-head"><div class="section-head__text"><span class="eyebrow">Память о питомце</span><h2>Урны для праха и доставка</h2><p class="lead">Поможем выбрать урну: покажем фото моделей и назовём цену до заказа.</p></div></div>
+    <div class="section-head"><div class="section-head__text"><span class="eyebrow">Память о питомце</span><h2>Урны для праха и доставка</h2><p class="lead">Урны трёх видов. Базовая стоимость урны — {{price:urn}}, цену конкретной модели назовём при заказе.</p></div></div>
     <div class="grid grid-3">
-      <article class="card"><div class="ph" style="min-height:160px">{{i:photo}}<span>[ADD REAL PHOTO]</span></div><h3>Урна для праха</h3><p>Стоимость: {{price:urn}}. Модели и материалы: [ADD REAL INFO].</p></article>
-      <article class="card"><div class="ph" style="min-height:160px">{{i:photo}}<span>[ADD REAL PHOTO]</span></div><h3>Урна с гравировкой</h3><p>Имя питомца, даты или короткая надпись. Наличие и стоимость: [ADD REAL INFO].</p></article>
-      <article class="card"><div class="ph" style="min-height:160px">{{i:photo}}<span>[ADD REAL PHOTO]</span></div><h3>Биоразлагаемая урна</h3><p>Для тех, кто хочет развеять или захоронить прах. Наличие и стоимость: [ADD REAL INFO].</p></article>
+      <article class="card"><span class="card__ico">{{i:urn}}</span><h3>Деревянная урна</h3><p>Тёплый натуральный материал. Подходит, чтобы хранить урну дома.</p></article>
+      <article class="card"><span class="card__ico">{{i:urn}}</span><h3>Керамическая урна</h3><p>Классический вариант для хранения дома или на памятном месте.</p></article>
+      <article class="card"><span class="card__ico">{{i:urn}}</span><h3>Пластиковая урна</h3><p>Лёгкий и практичный вариант.</p></article>
     </div>
     <div class="banner">
       <span class="banner__ico">{{i:route}}</span>
@@ -116,11 +126,18 @@
 
 <section class="section" id="otchet">
   <div class="container split">
-    <div class="ph" style="min-height:280px">{{i:camera}}<span>[ADD REAL PHOTO]<br>пример отчёта без персональных данных клиентов</span></div>
+    <div class="panel panel--tint">
+      <h3>{{i:camera}} Как передаём отчёт</h3>
+      <ul class="check-list">
+        <li>На флешке или диске</li>
+        <li>По электронной почте</li>
+        <li>В мессенджер</li>
+      </ul>
+    </div>
     <div class="split__text">
       <span class="eyebrow">Для индивидуальной кремации</span>
       <h2>Фото- и видеоотчёт</h2>
-      <p class="muted">Некоторым владельцам важно убедиться, что кремация прошла индивидуально. По вашему желанию снимаем фото и видео ключевых этапов. Состав отчёта и способ передачи согласуем заранее.</p>
+      <p class="muted">Некоторым владельцам важно убедиться, что кремация прошла индивидуально. По вашему желанию снимаем фото и видео ключевых этапов. Состав отчёта согласуем заранее, а передадим так, как вам удобно.</p>
       <ul class="check-list">
         <li>Формат и состав отчёта обсуждаем до начала услуги</li>
         <li>Стоимость — {{price:report}}</li>
@@ -134,7 +151,7 @@
 <section class="section" id="voprosy">
   <div class="container">
     <div class="section-head"><div class="section-head__text"><h2>Вопросы о кремации</h2></div><a class="link-arrow" href="faq.html">Все вопросы{{i:arrow-right}}</a></div>
-    {{faq:format,prah,umer,dokumenty}}
+    {{faq:format,prah,prisutstvie,otchet,urny,dokumenty}}
   </div>
 </section>
 
