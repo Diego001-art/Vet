@@ -331,7 +331,7 @@ def footer():
     </div>
     <div class="footer__bottom">
       <span>© <span data-year>{date.today().year}</span> {BRAND}. {TAGLINE}.</span>
-      <span><a href="privacy.html">Политика конфиденциальности</a></span>
+      <span><a href="privacy.html">Политика конфиденциальности</a> · <a href="soglasie.html">Согласие на обработку данных</a> · <button class="link-btn" type="button" data-cookie-reset>Настроить cookie</button></span>
       <span class="footer__motto">Рядом, когда это важнее всего</span>
     </div>
     <p class="footer__legal">{(dval("legal") + ". ") if legal_text() or not hide() else ""}Информация на сайте носит справочный характер и не является публичной офертой. Стоимость услуг подтверждается до начала их оказания.</p>
@@ -365,7 +365,8 @@ def form_fields(prefix, topic_default="Консультация", title="Ост�
       </div>
       <input type="hidden" name="details" value="">
       <p class="form-details" hidden></p>
-      <label class="consent"><input type="checkbox" name="consent" id="{prefix}-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a> и подтверждаю, что ознакомлен(а) с <a href="privacy.html" target="_blank">политикой обработки данных</a>.</span></label>
+      <label class="consent"><input type="checkbox" name="consent" id="{prefix}-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a></span></label>
+      <p class="form-note">Как мы обращаемся с данными — в <a href="privacy.html" target="_blank">политике обработки персональных данных</a>.</p>
       <button class="btn btn--primary btn--block" type="submit">{icon("send")}Отправить заявку</button>
       <div class="form-status" role="status" hidden></div>
     </form>'''
@@ -385,7 +386,7 @@ def modals():
   </div>
 </dialog>
 <div class="cookie" id="cookie" hidden>
-  <p>Сайт запоминает ваш выбор в браузере и подключает аналитические cookie (Яндекс Метрика и другие) только после вашего согласия. Подробнее — в <a href="privacy.html">политике обработки данных</a>.</p>
+  <p>Если вы нажмёте «Принять», подключится Яндекс Метрика: она собирает cookie-идентификатор, IP-адрес и сведения о посещении страниц, чтобы мы видели статистику сайта. Данные хранятся в России. Ваш выбор сохраняется в браузере, изменить его можно по ссылке «Настроить cookie» внизу страницы. Подробнее — в <a href="privacy.html">политике обработки данных</a>.</p>
   <div class="btn-row"><button class="btn btn--primary btn--sm" type="button" data-consent="yes">Принять</button><button class="btn btn--sm" type="button" data-consent="no">Отказаться</button></div>
 </div>'''
 
@@ -634,7 +635,7 @@ FAQ = {
     "podgotovka": ("Как подготовиться к приезду врача?", "<p>Выберите тихое место, где питомцу привычно, и постелите пелёнку. Подготовьте выписки из клиники, если они есть. Подумайте, будут ли рядом дети и другие животные.</p><p>Подробнее — в <a href=\"stati-podgotovka.html\">памятке о подготовке к визиту</a>.</p>"),
     "umer": ("Что делать, если питомец умер дома?", "<p>Положите тело на пелёнку в прохладном месте и накройте тканью. Позвоните нам или оставьте заявку — организуем <a href=\"vyvoz.html\">вывоз на кремацию</a>.</p><p>Пошагово — в <a href=\"stati-pitomec-umer.html\">памятке для владельцев</a>.</p>"),
     "format": ("Чем общая кремация отличается от индивидуальной?", "<p>При общей кремации животных кремируют вместе, прах владельцу не возвращают. При индивидуальной питомца кремируют отдельно и передают вам прах в урне. Для индивидуальной кремации можно заказать фото- и видеоотчёт.</p>"),
-    "prah": ("Когда я получу прах?", "<p>Индивидуальная кремация проводится от 2 до 6 рабочих дней. После этого прах передаём вам в урне — её можно забрать самостоятельно или заказать доставку.</p>"),
+    "prah": ("Когда я получу прах?", "<p>Индивидуальная кремация обычно занимает от 2 до 6 рабочих дней, точный срок указываем в договоре. После этого прах передаём вам в урне — её можно забрать самостоятельно или заказать доставку.</p>"),
     "prisutstvie": ("Можно ли присутствовать при кремации?", "<p>Да, можно. Время согласуем заранее, при оформлении кремации.</p>"),
     "otchet": ("Как я получу фото- и видеоотчёт?", "<p>Как вам удобнее: на флешке или диске, по электронной почте или в мессенджер. Способ выбираете при оформлении индивидуальной кремации.</p>"),
     "urny": ("Какие есть урны?", "<p>Деревянные, керамические и пластиковые. Стоимость конкретной модели назовём при заказе.</p>"),
@@ -788,8 +789,7 @@ PARTS = {
     "review-links": review_links,
     "messengers": lambda: f'<div class="chip-row">{messenger_links()}</div>',
     "contact-buttons": lambda: f'<div class="btn-row">{contact_buttons()}</div>',
-    "form-feedback": lambda: form_fields("fb", topic_default="Другое", title="Оставить отзыв или вопрос", sub="Напишите, что было хорошо и что стоит улучшить. Мы прочитаем каждое сообщение.", name="feedback"),
-    "form-contacts": lambda: form_fields("ct"),
+        "form-contacts": lambda: form_fields("ct"),
     "emblem-big": lambda: emblem("big", 120, "emblem-big"),
     "chev": lambda: icon("chev", "icon chev"),
 }

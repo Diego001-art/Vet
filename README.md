@@ -44,7 +44,7 @@ docs/                 ← рекомендации: Google, Яндекс, AI-п�
 | `experience`, `visitDuration` | | «О службе», FAQ |
 | `services.*.prices`, `extras.*.price`, `zones.*.price` | числа в рублях | таблицы цен, калькулятор, Schema `offers` |
 | `reviewLinks` | ссылки на карточки в Яндексе / Google / 2ГИС | кнопки «Оставить отзыв» |
-| `analytics`, `verification` | ID Метрики / GA4 / Clarity, коды Вебмастера / Search Console | счётчики (после согласия на cookie), мета-теги |
+| `analytics`, `verification` | ID Яндекс Метрики, коды Вебмастера / Search Console | счётчики (после согласия на cookie), мета-теги |
 | `formEndpoint` | URL обработчика заявок | отправка форм (пока — демо-режим) |
 | `siteUrl` | ваш домен, если подключите | canonical, sitemap, Schema |
 
