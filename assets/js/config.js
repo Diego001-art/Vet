@@ -1,7 +1,7 @@
 /* Сгенерировано из _src/site.json сборщиком _src/build.py — не редактируйте вручную.
    Цены null = данных нет: на сайте выводится [ADD REAL PRICE]. */
 window.SITE_CONFIG = {
-  "brand": "Мягкий Свет",
+  "brand": "Вет служба СПБ",
   "weights": [
     {
       "id": "w1",
