@@ -41,6 +41,9 @@ VER = time.strftime("%Y%m%d%H%M%S")
 TODAY = date.today().isoformat()
 
 BRAND = D["brand"]
+# Адрес приёма заявок (formEndpoint) разрешаем в Content-Security-Policy, когда он появится
+from urllib.parse import urlsplit as _us
+CSP_ENDPOINT = (" " + "{0.scheme}://{0.netloc}".format(_us(D["formEndpoint"]))) if D.get("formEndpoint") else ""
 TAGLINE = D["tagline"]
 SITE_URL = D["siteUrl"].rstrip("/") + "/"
 BASE_PATH = "/" + SITE_URL.split("://", 1)[1].split("/", 1)[1] if "/" in SITE_URL.split("://", 1)[1] else "/"
@@ -365,8 +368,8 @@ def form_fields(prefix, topic_default="Консультация", title="Ост�
       </div>
       <input type="hidden" name="details" value="">
       <p class="form-details" hidden></p>
-      <label class="consent"><input type="checkbox" name="consent" id="{prefix}-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a></span></label>
-      <p class="form-note">Как мы обращаемся с данными — в <a href="privacy.html" target="_blank">политике обработки персональных данных</a>.</p>
+      <label class="consent"><input type="checkbox" name="consent" id="{prefix}-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank" rel="noopener">согласие на обработку персональных данных</a></span></label>
+      <p class="form-note">Как мы обращаемся с данными — в <a href="privacy.html" target="_blank" rel="noopener">политике обработки персональных данных</a>.</p>
       <button class="btn btn--primary btn--block" type="submit">{icon("send")}Отправить заявку</button>
       <div class="form-status" role="status" hidden></div>
     </form>'''
@@ -844,6 +847,8 @@ def page(meta, body, fname, ctx):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://mc.yandex.ru https://yastatic.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://mc.yandex.ru; font-src 'self'; connect-src 'self' https://mc.yandex.ru{CSP_ENDPOINT}; frame-src https://mc.yandex.ru; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 {base}<title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 {robots}
