@@ -113,10 +113,18 @@ def dval(key):
         return html.escape(D["phone"]) if PHONE_HREF else tok("PHONE")
     if key == "email":
         return f'<a href="mailto:{html.escape(D["email"])}">{html.escape(D["email"])}</a>' if D["email"] else tok("EMAIL")
+    if key == "hours-lower":
+        h = D["hours"]
+        return html.escape(h[:1].lower() + h[1:]) if h else tok("HOURS")
     if key == "hours":
         return html.escape(D["hours"]) if D["hours"] else tok("HOURS")
     if key == "city":
         return html.escape(D["city"]) if D["city"] else tok("CITY")
+    if key == "area-short":
+        return html.escape(D.get("serviceAreaShort") or D["serviceArea"]) if (D.get("serviceAreaShort") or D["serviceArea"]) else tok("SERVICE AREA")
+    if key == "area-lower":
+        a = D["serviceArea"]
+        return html.escape(a[:1].lower() + a[1:]) if a else tok("SERVICE AREA")
     if key == "area":
         return html.escape(D["serviceArea"]) if D["serviceArea"] else tok("SERVICE AREA")
     if key == "experience":
@@ -148,6 +156,8 @@ def price_from(key):
     v = min_price(key)
     if v is None:
         return tok("PRICE")
+    if v == 0:
+        return "бесплатно"
     return ("от " if key in D["services"] else "") + rub(v)
 
 
@@ -168,10 +178,11 @@ def messenger_links(cls="chip"):
 
 
 def phone_block_header():
-    inner = f'<span class="topbar__phone-ico">{icon("phone")}</span><span class="topbar__phone-num">{dval("phone-text")}<small>{dval("hours")}</small></span>'
     if PHONE_HREF:
+        inner = f'<span class="topbar__phone-ico">{icon("phone")}</span><span class="topbar__phone-num">{dval("phone-text")}<small>{dval("hours")}</small></span>'
         return f'<a class="topbar__phone" href="tel:{PHONE_HREF}">{inner}</a>'
-    return f'<a class="topbar__phone" href="kontakty.html">{inner}</a>'
+    # Телефона нет: показываем часы работы, а не надпись «Оставить заявку» со значком трубки
+    return f'<div class="topbar__phone topbar__phone--hours"><span class="topbar__phone-ico">{icon("clock")}</span><span class="topbar__phone-num">{dval("hours")}<small>Выезд на дом</small></span></div>'
 
 
 # --------------------------------------------------------------------------
@@ -389,7 +400,7 @@ def modals():
   </div>
 </dialog>
 <div class="cookie" id="cookie" hidden>
-  <p>Если вы нажмёте «Принять», подключится Яндекс Метрика: она собирает cookie-идентификатор, IP-адрес и сведения о посещении страниц, чтобы мы видели статистику сайта. Данные хранятся в России. Ваш выбор сохраняется в браузере, изменить его можно по ссылке «Настроить cookie» внизу страницы. Подробнее — в <a href="privacy.html">политике обработки данных</a>.</p>
+  <p>С вашего согласия подключим Яндекс Метрику: cookie, IP-адрес и просмотренные страницы — для статистики сайта, данные хранятся в России. Изменить выбор можно внизу страницы. <a href="privacy.html#pravo">Подробнее</a></p>
   <div class="btn-row"><button class="btn btn--primary btn--sm" type="button" data-consent="yes">Принять</button><button class="btn btn--sm" type="button" data-consent="no">Отказаться</button></div>
 </div>'''
 
@@ -413,8 +424,11 @@ def cta_strip(text):
 
 
 def cta_section(title="Можно начать с разговора", text="Не нужно заранее знать, какая услуга нужна. Расскажите о ситуации — объясним варианты и порядок визита, без давления и спешки."):
-    phone_inner = f'<span class="cta__phone-ico">{icon("phone")}</span><span class="cta__phone-num">{dval("phone-text")}<small>{dval("hours")}</small></span>'
-    phone = f'<a class="cta__phone" href="tel:{PHONE_HREF}">{phone_inner}</a>' if PHONE_HREF else f'<div class="cta__phone">{phone_inner}</div>'
+    if PHONE_HREF:
+        phone_inner = f'<span class="cta__phone-ico">{icon("phone")}</span><span class="cta__phone-num">{dval("phone-text")}<small>{dval("hours")}</small></span>'
+        phone = f'<a class="cta__phone" href="tel:{PHONE_HREF}">{phone_inner}</a>'
+    else:
+        phone = f'<div class="cta__phone cta__phone--hours"><span class="cta__phone-ico">{icon("clock")}</span><span class="cta__phone-num">{dval("hours")}<small>Время работы</small></span></div>'
     return f'''<section class="section section--tight" id="svyaz">
   <div class="container">
     <div class="cta">
@@ -465,7 +479,7 @@ def price_tables(mode="all", group="all"):
             for wid in sp["weights"]:
                 w = next(x for x in D["weights"] if x["id"] == wid)
                 name = w["label"] if len(sp_ids) == 1 else sp["label"] + (", " + w["label"] if len(sp["weights"]) > 1 else "")
-                rows += f'<tr><th scope="row">{html.escape(name)}</th>' + "".join(f"<td>{price_cell(D['services'][c]['prices'][wid])}</td>" for c in cols) + "</tr>"
+                rows += f'<tr><th scope="row">{html.escape(name)}</th>' + "".join(f'<td data-label="{D["services"][c]["label"]}">{price_cell(D["services"][c]["prices"][wid])}</td>' for c in cols) + "</tr>"
         if mode != "euth":
             rows += f'<tr class="row-sep"><th scope="row">{D["extras"]["pickup"]["label"]}</th><td colspan="{len(cols)}">{price_cell(D["extras"]["pickup"]["price"])}</td></tr>'
         rows += f'<tr><th scope="row">Выезд за город</th><td colspan="{len(cols)}">доплата по зоне · <a href="zona.html">зоны выезда</a></td></tr>'
@@ -537,12 +551,12 @@ def zone_map_svg():
         r = radii[i] if i < len(radii) else 30
         rings += f'<circle cx="200" cy="155" r="{r}" fill="{z["color"]}" fill-opacity="0.28" stroke="{z["color"]}" stroke-width="1.5"/>'
         if i < len(zones) - 1:
-            labels += f'<text x="200" y="{155 - r + 18}" text-anchor="middle" font-size="11" font-weight="600" fill="#56718a">{html.escape(z["label"])}</text>'
+            labels += f'<text x="200" y="{155 - r + 18}" text-anchor="middle" font-size="14" font-weight="600" fill="#56718a">{html.escape(z["label"])}</text>'
     city = html.escape(D["city"]) if D["city"] else "Город"
     return (f'<svg viewBox="0 0 400 310" role="img" aria-label="Схема зон выезда от центра города к пригородам">'
             f'<g stroke="#e0edf5" stroke-width="2" fill="none"><path d="M20 230 C 120 190, 160 170, 200 155 S 320 90, 390 60"/><path d="M60 30 C 120 90, 170 130, 200 155 S 260 250, 300 300"/><path d="M0 155 H400"/></g>'
             f'{rings}{labels}<g transform="translate(200 147)"><circle r="15" fill="#fff"/><path d="M0 9s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" fill="#2866a0"/><circle cy="-2" r="2.6" fill="#fff"/></g>'
-            f'<text x="200" y="182" text-anchor="middle" font-size="11.5" font-weight="700" fill="#143b5b" stroke="#fff" stroke-width="3" paint-order="stroke">{city}</text></svg>')
+            f'<text x="200" y="182" text-anchor="middle" font-size="15" font-weight="700" fill="#143b5b" stroke="#fff" stroke-width="3" paint-order="stroke">{city}</text></svg>')
 
 
 def zone_block(heading="h2"):
@@ -555,14 +569,21 @@ def zone_block(heading="h2"):
       <div class="zone__text">
         <span class="eyebrow">Территория выезда</span>
         <{heading}>Зона выезда: {dval("city")}</{heading}>
-        <p class="muted">Где работаем: {dval("area")}. Назовите адрес — оператор скажет, когда врач сможет приехать и нужна ли доплата за выезд.</p>
+        <p class="muted">Где работаем: {dval("area-lower")}. Назовите адрес — оператор скажет, когда врач сможет приехать и нужна ли доплата за выезд.</p>
         <div class="zone__list">{rows}</div>
       </div>
       <div class="zone__map">
         {zone_map_svg()}
-        <p class="zone__map-caption">{icon("info")} Схема условная. Точные границы зон уточняйте по телефону.</p>
+        <p class="zone__map-caption">{icon("info")} Схема условная. Точную зону и доплату назовём при оформлении заявки.</p>
       </div>
     </div>'''
+
+
+def contact_line():
+    """Строка под кнопками на первом экране: телефон и часы или только часы."""
+    if PHONE_HREF:
+        return f'<p class="hero__contact">{icon("phone")} {dval("phone")} <span class="muted nowrap">· {dval("hours")}</span></p>'
+    return f'<p class="hero__contact">{icon("clock")} <span class="muted">{dval("hours")}</span></p>'
 
 
 def facts_block(heading="h2"):
@@ -631,9 +652,9 @@ FAQ = {
     "dlitsya": ("Сколько длится визит врача?", f"<p>Обычно визит занимает {dval('duration')}. Мы не торопимся: время нужно на осмотр, разговор, ваши вопросы и прощание.</p>"
                 if D["visitDuration"] or not HIDE_EMPTY else
                 "<p>Длительность зависит от ситуации — ориентир назовём при звонке. Мы не торопимся: время нужно на осмотр, разговор, ваши вопросы и прощание.</p>"),
-    "noch": ("Можно ли вызвать врача срочно, в том числе ночью?", f"<p>Часы работы: {dval('hours')}. Время приезда зависит от адреса и загрузки врачей — оператор назовёт его при звонке.</p>"),
+    "noch": ("Можно ли вызвать врача срочно, в том числе ночью?", f"<p>Мы работаем {dval('hours-lower')}. Время приезда зависит от адреса и загрузки врачей — оператор назовёт его при звонке.</p>"),
     "kvartira": ("Врач приезжает в квартиру и в частный дом?", "<p>Да. Врач приезжает по адресу, который вы назовёте: в квартиру или частный дом в пределах зоны выезда.</p>"),
-    "rayon": ("Выезжаете ли вы в мой район?", f"<p>Зона выезда: {dval('area')}. Назовите адрес — оператор подтвердит выезд и доплату, если она нужна. Подробнее — на странице <a href=\"zona.html\">«Зона выезда»</a>.</p>"),
+    "rayon": ("Выезжаете ли вы в мой район?", f"<p>Зона выезда — {dval('area-lower')}. Назовите адрес — оператор подтвердит выезд и доплату, если она нужна. Подробнее — на странице <a href=\"zona.html\">«Зона выезда»</a>.</p>"),
     "vidy": ("С какими животными вы работаете?", "<p>С кошками и собаками, грызунами, кроликами, хорьками, птицами, рептилиями и другими экзотическими животными. Для экзотических видов уточните при звонке, сможет ли приехать врач с нужным опытом.</p>"),
     "podgotovka": ("Как подготовиться к приезду врача?", "<p>Выберите тихое место, где питомцу привычно, и постелите пелёнку. Подготовьте выписки из клиники, если они есть. Подумайте, будут ли рядом дети и другие животные.</p><p>Подробнее — в <a href=\"stati-podgotovka.html\">памятке о подготовке к визиту</a>.</p>"),
     "umer": ("Что делать, если питомец умер дома?", "<p>Положите тело на пелёнку в прохладном месте и накройте тканью. Позвоните нам или оставьте заявку — организуем <a href=\"vyvoz.html\">вывоз на кремацию</a>.</p><p>Пошагово — в <a href=\"stati-pitomec-umer.html\">памятке для владельцев</a>.</p>"),
@@ -802,6 +823,7 @@ COND = {
     "team": not HIDE_EMPTY,       # карточек врачей нет в данных — показываем заглушки только в режиме заполнения
     "reviews": not HIDE_EMPTY,    # то же для отзывов
     "phone": bool(PHONE_HREF) or not HIDE_EMPTY,
+    "nophone": not PHONE_HREF and HIDE_EMPTY,
     "messengers": bool(WA_URL or TG_URL) or not HIDE_EMPTY,
     "email": bool(D["email"]) or not HIDE_EMPTY,
     "experience": bool(D["experience"]) or not HIDE_EMPTY,
@@ -817,6 +839,7 @@ def render(text, meta, ctx):
     text = re.sub(r"\{\{price:([a-z]+)\}\}", lambda m: price_from(m.group(1)), text)
     text = re.sub(r"\{\{prices:([a-z]+):([a-z]+)\}\}", lambda m: price_tables(m.group(1), m.group(2)), text)
     text = re.sub(r"\{\{cta:([^}]+)\}\}", lambda m: cta_strip(m.group(1)), text)
+    text = text.replace("{{contactline}}", contact_line())
     text = text.replace("{{crumbs}}", crumbs_html(meta)).replace("{{cityIn}}", CITY_IN)
     text = re.sub(r"\{\{part:([a-z0-9-]+)\}\}", lambda m: PARTS[m.group(1)](), text)
     if "{{faq:all}}" in text:

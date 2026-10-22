@@ -2,14 +2,14 @@
 <section class="hero">
   <div class="container hero__grid">
     <div class="hero__text">
-      <span class="eyebrow">Выезд на дом · {{d:area}}</span>
+      <span class="eyebrow">Выезд на дом · {{d:area-short}}</span>
       <h1>Усыпление животных на дому и кремация{{cityIn}}</h1>
       <p class="lead">Ветеринарный врач приедет к вам, осмотрит питомца и спокойно ответит на вопросы. Если решение принято, поможем попрощаться без спешки и возьмём на себя кремацию.</p>
       <div class="btn-row">
         <button class="btn btn--primary" type="button" data-open="callback" data-topic="Усыпление на дому">{{i:chat}}Вызвать врача</button>
         <a class="btn" href="#kalkulyator">{{i:calc}}Узнать цену</a>
       </div>
-      <p class="hero__contact">{{i:phone}} {{d:phone}} <span class="muted">· {{d:hours}}</span></p>
+      {{contactline}}
       {{part:messengers}}
       <ul class="hero__facts">
         <li>{{i:steth}}<span><strong>Сначала осмотр</strong>и разговор с вами</span></li>
@@ -20,7 +20,7 @@
     <div class="hero__media">
       <div class="arch hero__art">
         <picture>
-          <source type="image/webp" srcset="assets/img/hero-dog-560.webp 560w, assets/img/hero-dog-800.webp 800w, assets/img/hero-dog-1200.webp 1200w" sizes="(max-width: 1024px) 92vw, 560px">
+          <source type="image/webp" srcset="assets/img/hero-dog-560.webp 560w, assets/img/hero-dog-800.webp 800w, assets/img/hero-dog-1200.webp 1200w" sizes="(max-width: 600px) 130vw, (max-width: 1024px) 92vw, 560px">
           <img src="assets/img/hero-dog-1200.jpg" width="1200" height="800" alt="Пожилая собака спокойно спит на пледе дома, хозяин гладит её по голове" fetchpriority="high" decoding="async">
         </picture>
       </div>
@@ -71,25 +71,29 @@
       <a class="card card--link card--stretch" href="usyplenie.html">
         <span class="card__ico">{{i:steth}}</span>
         <h3>Усыпление на дому</h3>
-        <p>Осмотр, разговор, седация и процедура в спокойной домашней обстановке. {{price:euth}}</p>
+        <p>Осмотр, разговор, седация и процедура в спокойной домашней обстановке.</p>
+        <span class="card__price">{{price:euth}}</span>
         <span class="link-arrow card__foot">Подробнее{{i:arrow-right}}</span>
       </a>
       <a class="card card--link card--stretch" href="kremaciya.html#individualnaya">
         <span class="card__ico">{{i:urn}}</span>
         <h3>Индивидуальная кремация</h3>
-        <p>Отдельная кремация и возврат праха в урне. По желанию — фото- и видеоотчёт. {{price:individual}}</p>
+        <p>Отдельная кремация и возврат праха в урне. По желанию — фото- и видеоотчёт.</p>
+        <span class="card__price">{{price:individual}}</span>
         <span class="link-arrow card__foot">Подробнее{{i:arrow-right}}</span>
       </a>
       <a class="card card--link card--stretch" href="kremaciya.html#obshchaya">
         <span class="card__ico">{{i:flame}}</span>
         <h3>Общая кремация</h3>
-        <p>Кремация вместе с другими животными, без возврата праха. {{price:common}}</p>
+        <p>Кремация вместе с другими животными, без возврата праха.</p>
+        <span class="card__price">{{price:common}}</span>
         <span class="link-arrow card__foot">Подробнее{{i:arrow-right}}</span>
       </a>
       <a class="card card--link card--stretch" href="vyvoz.html">
         <span class="card__ico">{{i:truck}}</span>
         <h3>Вывоз тела</h3>
-        <p>Заберём питомца из дома или клиники и доставим на кремацию. {{price:pickup}}</p>
+        <p>Заберём питомца из дома или клиники и доставим на кремацию.</p>
+        <span class="card__price">{{price:pickup}}</span>
         <span class="link-arrow card__foot">Подробнее{{i:arrow-right}}</span>
       </a>
     </div>
@@ -147,7 +151,7 @@
       <article class="feature-card">
         <div class="feature-card__media">{{i:flame}}<span class="chip">{{i:check}}Общая и индивидуальная</span></div>
         <div class="feature-card__body">
-          <h3>Кремация и подтверждения</h3>
+          <h3>Кремация</h3>
           <p>Поможем выбрать формат. При индивидуальной кремации прах возвращается вам в урне.</p>
           <div class="feature-card__links"><a class="link-arrow" href="kremaciya.html#individualnaya">Индивидуальная{{i:arrow-right}}</a><a class="link-arrow" href="kremaciya.html#obshchaya">Общая{{i:arrow-right}}</a></div>
         </div>
@@ -163,7 +167,7 @@
     </div>
     <div class="banner">
       <span class="banner__ico">{{i:camera}}</span>
-      <div class="banner__text"><strong>Фото- и видеоотчёт об индивидуальной кремации</strong><span>Формат материалов и способ получения обсуждаем до начала услуги.</span></div>
+      <div class="banner__text"><strong>Фото- и видеоотчёт об индивидуальной кремации</strong><span>Передадим на флешке или диске, по электронной почте или в мессенджер — как вам удобно.</span></div>
       <a class="link-arrow" href="kremaciya.html#otchet">Подробнее{{i:arrow-right}}</a>
     </div>
   </div>
