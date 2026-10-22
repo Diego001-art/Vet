@@ -499,6 +499,7 @@ def prices_panel(title="Цена зависит от вида и веса пит
         <div class="section-head__text"><h2>{title}</h2><p class="muted">{sub}</p></div>
         {price_tables(mode, group)}
         <p class="prices-note">Окончательную стоимость врач подтверждает до начала работы. Если на месте понадобится что-то сверх согласованного, сначала спросим вас.</p>
+        <p class="prices-links">Подробнее: <a href="usyplenie-koshek.html">усыпление кошки</a> · <a href="usyplenie-sobak.html">усыпление собаки</a> · <a href="kremaciya-koshek.html">кремация кошки</a> · <a href="kremaciya-sobak.html">кремация собаки</a></p>
       </div>
       <a class="calc-teaser" href="ceny.html#kalkulyator">
         <span class="calc-teaser__ico">{icon("calc")}</span>
@@ -597,7 +598,7 @@ def facts_block(heading="h2"):
         contacts.append(f'<a href="{TG_URL}" data-track="telegram_click" target="_blank" rel="noopener">Telegram</a>')
     contacts.append('<a href="kontakty.html">форма заявки</a>')
     rows = [
-        ("Кто мы", f"«{BRAND}» — выездная ветеринарная служба. Врачи приезжают к питомцу домой."),
+        ("Кто мы", f"«{BRAND}» — выездная ветеринарная служба. Врачи приезжают к питомцу домой. <a href=\"o-nas.html\">Подробнее о службе</a>."),
         ("Услуги", 'Гуманное <a href="usyplenie.html">усыпление животных на дому</a> по медицинским показаниям, <a href="kremaciya.html">общая и индивидуальная кремация</a>, <a href="vyvoz.html">вывоз тела</a>, урны и доставка праха.'),
         ("Для кого", "Владельцы кошек, собак, грызунов, кроликов, хорьков, птиц и рептилий."),
         ("Где работаем", dval("area")),
@@ -722,6 +723,10 @@ def org_node():
         n["areaServed"] = {"@type": "City", "name": D["city"]}
     if D["openingHoursSchema"]:
         n["openingHours"] = D["openingHoursSchema"]
+    allp = [v for s in D["services"].values() for v in s["prices"].values() if isinstance(v, (int, float))]
+    if allp:
+        n["priceRange"] = f"{min(allp)}–{max(allp)} RUB"
+        n["currenciesAccepted"] = "RUB"
     if D["mapUrl"]:
         n["hasMap"] = D["mapUrl"]
     if D["foundingYear"]:
@@ -819,6 +824,9 @@ PARTS = {
 }
 
 
+# Страницы без содержания не индексируем, пока нет данных: «Отзывы» без отзывов
+NOINDEX = set() if not HIDE_EMPTY else {"otzyvy.html"}
+
 COND = {
     "team": not HIDE_EMPTY,       # карточек врачей нет в данных — показываем заглушки только в режиме заполнения
     "reviews": not HIDE_EMPTY,    # то же для отзывов
@@ -856,7 +864,7 @@ def page(meta, body, fname, ctx):
     url = page_url(fname)
     is404 = fname == "404.html"
     base = f'<base href="{BASE_PATH}">\n' if is404 else ""
-    robots = '<meta name="robots" content="noindex, follow">' if is404 else '<meta name="robots" content="index, follow, max-image-preview:large">'
+    robots = '<meta name="robots" content="noindex, follow">' if (is404 or fname in NOINDEX) else '<meta name="robots" content="index, follow, max-image-preview:large">'
     canonical = "" if is404 else f'<link rel="canonical" href="{url}">\n<meta property="og:url" content="{url}">'
     verify = ""
     if D["verification"]["google"]:
@@ -921,7 +929,7 @@ def write_config_js():
 
 
 def write_seo_files(pages):
-    urls = "\n".join(f"  <url><loc>{page_url(p)}</loc><lastmod>{TODAY}</lastmod></url>" for p in pages if p != "404.html")
+    urls = "\n".join(f"  <url><loc>{page_url(p)}</loc><lastmod>{TODAY}</lastmod></url>" for p in pages if p != "404.html" and p not in NOINDEX)
     (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
     (OUT / "robots.txt").write_text(
         "# Индексация открыта для поисковых и AI-систем\nUser-agent: *\nAllow: /\nDisallow: /404.html\n\n"
