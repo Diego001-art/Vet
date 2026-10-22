@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://mc.yandex.ru https://yastatic.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://mc.yandex.ru; font-src 'self'; connect-src 'self' https://mc.yandex.ru; frame-src https://mc.yandex.ru; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <base href="/Vet/">
 <title>Страница не найдена — Ветслужба СПб</title>
 <meta name="description" content="Такой страницы нет на сайте.">
@@ -22,9 +24,9 @@
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=20261021184111">
-<script src="assets/js/config.js?v=20261021184111" defer></script>
-<script src="assets/js/main.js?v=20261021184111" defer></script>
+<link rel="stylesheet" href="assets/css/style.css?v=20261022111339">
+<script src="assets/js/config.js?v=20261022111339" defer></script>
+<script src="assets/js/main.js?v=20261022111339" defer></script>
 
 </head>
 <body>
@@ -112,8 +114,8 @@
       </div>
       <input type="hidden" name="details" value="">
       <p class="form-details" hidden></p>
-      <label class="consent"><input type="checkbox" name="consent" id="cbm-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank">согласие на обработку персональных данных</a></span></label>
-      <p class="form-note">Как мы обращаемся с данными — в <a href="privacy.html" target="_blank">политике обработки персональных данных</a>.</p>
+      <label class="consent"><input type="checkbox" name="consent" id="cbm-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank" rel="noopener">согласие на обработку персональных данных</a></span></label>
+      <p class="form-note">Как мы обращаемся с данными — в <a href="privacy.html" target="_blank" rel="noopener">политике обработки персональных данных</a>.</p>
       <button class="btn btn--primary btn--block" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg>Отправить заявку</button>
       <div class="form-status" role="status" hidden></div>
     </form>
