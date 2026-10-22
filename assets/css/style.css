@@ -19,7 +19,7 @@
   --tint-2: #f4faff;
   --ink: #183b56;
   --heading: #143b5b;
-  --muted: #56718a;
+  --muted: #4b6479;
   --line: #e0edf5;
   --primary: #2866a0;
   --primary-2: #1c78ad;
@@ -145,7 +145,7 @@ a.chip:hover { border-color: var(--primary); color: var(--primary); }
 .brand__mark { width: 46px; height: 46px; flex: none; }
 .brand__text { display: grid; line-height: 1.1; }
 .brand__name { font-weight: 700; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--heading); }
-.brand__tag { font-size: 0.72rem; color: var(--muted); margin-top: 3px; letter-spacing: 0.01em; }
+.brand__tag { font-size: 0.76rem; color: var(--muted); margin-top: 3px; letter-spacing: 0.01em; }
 .topbar__region { display: flex; align-items: center; gap: 10px; padding-left: 24px; border-left: 1px solid var(--line); font-size: 0.85rem; line-height: 1.3; color: var(--muted); }
 .topbar__region strong { color: var(--heading); font-weight: 600; display: block; }
 .topbar__region .icon { color: var(--primary); width: 22px; height: 22px; }
@@ -153,7 +153,7 @@ a.chip:hover { border-color: var(--primary); color: var(--primary); }
 .topbar__phone { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--heading); }
 .topbar__phone-ico { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--tint); color: var(--primary); }
 .topbar__phone-num { display: grid; line-height: 1.2; font-weight: 700; font-size: 1.12rem; font-variant-numeric: tabular-nums; }
-.topbar__phone-num small { font-weight: 400; font-size: 0.75rem; color: var(--muted); }
+.topbar__phone-num small { font-weight: 400; font-size: 0.78rem; color: var(--muted); }
 .topbar__burger { display: none; }
 
 .navbar { border-top: 1px solid var(--line); }
@@ -309,7 +309,7 @@ a.chip:hover { border-color: var(--primary); color: var(--primary); }
 .calc__group { display: grid; gap: 10px; }
 .calc__group-title { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-weight: 600; }
 .calc__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px clamp(20px, 3vw, 36px); border-top: 1px solid var(--line); background: var(--tint-2); }
-.calc__counter { font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.calc__counter { white-space: nowrap; font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .calc__privacy { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 0.82rem; color: var(--muted); }
 .calc__privacy .icon { width: 16px; height: 16px; }
 .calc-summary { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
@@ -774,3 +774,47 @@ html:has(.subnav) { scroll-padding-top: calc(var(--header-h) + 72px); }
 .form-off { margin: 0 0 14px; padding: 10px 14px; border-radius: 12px; background: var(--tint, #eef5fb); color: var(--heading); font-size: 0.86rem; line-height: 1.45; }
 form[data-form] :disabled { cursor: not-allowed; opacity: .6; }
 .link-btn { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
+
+/* ---------- UX-правки 22.10.2026 ---------- */
+/* Часы работы вместо «телефона», пока номера нет */
+.topbar__phone--hours .topbar__phone-num { font-size: 0.98rem; }
+.cta__phone--hours .cta__phone-num { font-size: 1rem; }
+/* Цена в карточках услуг — отдельной строкой */
+.card__price { display: block; margin-top: 4px; font-weight: 700; color: var(--heading); font-variant-numeric: tabular-nums; }
+/* Ссылки «Подробнее →»: удобная зона нажатия без сдвига вёрстки */
+.link-arrow { padding-block: 10px; margin-block: -10px; }
+/* Мелкие подписи в таблице цен — не меньше 12px */
+.price-table th small { font-size: 0.75rem; }
+/* Подменю страниц: подсказка, что его можно прокрутить */
+.subnav__inner { scroll-snap-type: x proximity; }
+.subnav a { scroll-snap-align: start; }
+@media (max-width: 760px) {
+  .subnav__inner { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); padding-right: 32px; }
+}
+/* Таблица цен на телефоне — карточками, без горизонтальной прокрутки */
+@media (max-width: 640px) {
+  .table-wrap { overflow: visible; }
+  .price-table { min-width: 0; }
+  .price-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .price-table, .price-table tbody, .price-table tr, .price-table th, .price-table td { display: block; width: auto; }
+  .price-table tr { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .price-table tr:last-child { border-bottom: 0; }
+  .price-table th, .price-table td { padding: 0; border: 0; }
+  .price-table tbody th { margin-bottom: 6px; font-size: 1rem; }
+  .price-table td { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; white-space: normal; }
+  .price-table td[data-label]::before { content: attr(data-label); font-weight: 400; color: var(--muted); }
+  .price-table td:not([data-label]) { display: block; font-weight: 600; }
+  .price-table .row-sep { background: var(--tint-2); }
+  .price-table .row-sep th, .price-table .row-sep td { background: none; }
+}
+/* Cookie-уведомление на телефоне компактнее */
+@media (max-width: 560px) {
+  .cookie { left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); padding: 14px 16px; gap: 10px; font-size: 0.84rem; }
+  .cookie .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+  .cookie .btn-row .btn { width: 100%; }
+}
+@media (max-width: 480px) {
+  .calc__counter { display: none; }  /* шаги и так видны в шапке калькулятора */
+}
+/* Удобная зона нажатия у ссылок-кнопок в подвале и статьях */
+.footer__phone a, .footer__contacts > a, .article-cta a { display: inline-block; padding-block: 8px; }

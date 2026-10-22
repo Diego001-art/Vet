@@ -11,7 +11,7 @@
   var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var isNum = function (v) { return typeof v === "number" && isFinite(v); };
   var PH_PRICE = '<span class="tk">[ADD REAL PRICE]</span>';
-  var priceHtml = function (v) { return isNum(v) ? rub(v) : PH_PRICE; };
+  var priceHtml = function (v) { return isNum(v) ? (v === 0 ? "бесплатно" : rub(v)) : PH_PRICE; };
 
   /* ---------- 1. Аналитика: события и загрузка счётчиков после согласия ---------- */
   var A = C.analytics || {};
@@ -303,7 +303,7 @@
     rows.push({ label: "Питомец", value: esc(petLabel), muted: true });
     parts.push("Питомец: " + petLabel);
     var add = function (label, price) {
-      if (isNum(price)) { rows.push({ label: label, value: rub(price) }); total += price; parts.push(label + " — " + rub(price)); }
+      if (isNum(price)) { var v = price === 0 ? "бесплатно" : rub(price); rows.push({ label: label, value: v }); total += price; parts.push(label + " — " + v); }
       else { rows.push({ label: label, value: PH_PRICE }); unknown = true; parts.push(label); }
     };
     if (s.situation === "vet") add(C.services.euth.label, C.services.euth.prices[s.weight]);
