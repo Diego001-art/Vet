@@ -818,3 +818,9 @@ form[data-form] :disabled { cursor: not-allowed; opacity: .6; }
 }
 /* Удобная зона нажатия у ссылок-кнопок в подвале и статьях */
 .footer__phone a, .footer__contacts > a, .article-cta a { display: inline-block; padding-block: 8px; }
+/* Таблицы в статьях и ссылки под прайсом */
+.prose table { width: 100%; border-collapse: collapse; margin: 18px 0 22px; font-size: 0.95rem; }
+.prose th, .prose td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.prose thead th { color: var(--muted); font-weight: 600; font-size: 0.85rem; background: var(--tint-2); }
+.prose tbody th { color: var(--heading); font-weight: 600; }
+.prices-links { margin-top: 6px; font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
