@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /404.html
 
-Sitemap: https://diego001-art.github.io/Vet/sitemap.xml
+Sitemap: https://vetsluzhbaspb.com/sitemap.xml

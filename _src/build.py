@@ -931,6 +931,9 @@ def write_config_js():
 def write_seo_files(pages):
     urls = "\n".join(f"  <url><loc>{page_url(p)}</loc><lastmod>{TODAY}</lastmod></url>" for p in pages if p != "404.html" and p not in NOINDEX)
     (OUT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n', encoding="utf-8")
+    host = SITE_URL.split("://", 1)[1].split("/", 1)[0]
+    if not host.endswith("github.io"):
+        (OUT / "CNAME").write_text(host + "\n", encoding="utf-8")  # свой домен для GitHub Pages
     (OUT / "robots.txt").write_text(
         "# Индексация открыта для поисковых и AI-систем\nUser-agent: *\nAllow: /\nDisallow: /404.html\n\n"
         f"Sitemap: {SITE_URL}sitemap.xml\n", encoding="utf-8")
