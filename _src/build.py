@@ -367,12 +367,25 @@ def form_fields(prefix, topic_default="Консультация", title="Ост�
     opts = "".join(f'<option{" selected" if t == topic_default else ""}>{t}</option>' for t in SERVICES_SELECT)
     times = "".join(f"<option>{t}</option>" for t in TIMES)
     tid = f' id="{title_id}"' if title_id else ""
+    messenger_mode = not D["formEndpoint"] and bool(WA_URL or TG_URL)
+    if messenger_mode:
+        # Сайт не хранит заявку: текст собирается в браузере и уходит в выбранный мессенджер
+        phone_label, phone_req = "Телефон для обратного звонка", ""
+        btns = []
+        if WA_URL:
+            btns.append(f'<button class="btn btn--wa" type="submit" data-send="wa">{icon("whatsapp")}Отправить в WhatsApp</button>')
+        if TG_URL:
+            btns.append(f'<button class="btn btn--tg" type="submit" data-send="tg">{icon("telegram")}Отправить в Telegram</button>')
+        submit_html = '<p class="form-send-title">Куда отправить заявку:</p><div class="form-send">' + "".join(btns) + "</div>"
+    else:
+        phone_label, phone_req = 'Телефон или WhatsApp <span class="req">*</span>', " required"
+        submit_html = f'<button class="btn btn--primary btn--block" type="submit">{icon("send")}Отправить заявку</button>'
     return f'''<form class="form-card" data-form="{name}" novalidate>
       <{tag} class="form-card__title"{tid}>{title}</{tag}>
       <p>{sub}</p>
       <div class="form-grid">
         <div class="field"><label for="{prefix}-name">Имя</label><input class="input" id="{prefix}-name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться"><span class="field__error"></span></div>
-        <div class="field"><label for="{prefix}-phone">Телефон или WhatsApp <span class="req">*</span></label><input class="input" id="{prefix}-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required><span class="field__error" aria-live="polite"></span></div>
+        <div class="field"><label for="{prefix}-phone">{phone_label}</label><input class="input" id="{prefix}-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__"{phone_req}><span class="field__error" aria-live="polite"></span></div>
         <div class="field"><label for="{prefix}-topic">Услуга</label><select class="select" id="{prefix}-topic" name="topic">{opts}</select></div>
         <div class="field"><label for="{prefix}-time">Удобное время</label><select class="select" id="{prefix}-time" name="time">{times}</select></div>
         <div class="field field--full"><label for="{prefix}-location">Район или адрес</label><input class="input" id="{prefix}-location" name="location" type="text" autocomplete="street-address" placeholder="Например: район и улица"></div>
@@ -381,7 +394,7 @@ def form_fields(prefix, topic_default="Консультация", title="Ост�
       <p class="form-details" hidden></p>
       <label class="consent"><input type="checkbox" name="consent" id="{prefix}-consent" value="yes"><span>Даю <a href="soglasie.html" target="_blank" rel="noopener">согласие на обработку персональных данных</a></span></label>
       <p class="form-note">Как мы обращаемся с данными — в <a href="privacy.html" target="_blank" rel="noopener">политике обработки персональных данных</a>.</p>
-      <button class="btn btn--primary btn--block" type="submit">{icon("send")}Отправить заявку</button>
+      {submit_html}
       <div class="form-status" role="status" hidden></div>
     </form>'''
 
