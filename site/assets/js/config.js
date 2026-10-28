@@ -159,5 +159,5 @@ window.SITE_CONFIG = {
   "phone": "+7 931 530-50-26",
   "phoneHref": "+79315305026",
   "whatsappUrl": "https://wa.me/79315305026",
-  "telegramUrl": "https://t.me/+79315305026"
+  "telegramUrl": "https://t.me/VetSluzhbaSPB"
 };
